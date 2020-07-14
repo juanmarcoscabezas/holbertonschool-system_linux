@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <sys/types.h>
 #include <dirent.h>
+#include <errno.h>
 
-void execute(int, char **);
-
+int execute(int, char **);
+char *error_message(int);
 /**
  * main - Entry point
  * @argc: Application parameters length
@@ -12,8 +13,7 @@ void execute(int, char **);
  */
 int main(int argc, char **argv)
 {
-	execute(argc, argv);
-	return (0);
+	return(execute(argc, argv));
 }
 
 /**
@@ -22,10 +22,11 @@ int main(int argc, char **argv)
  * @argv: Application parameters
  * Return: Always 0
  */
-void execute(int argc, char **argv)
+int execute(int argc, char **argv)
 {
 	DIR *dir;
 	struct dirent *read;
+	int execution_return = 0;
 
 	if (argc <= 1)
 	{
@@ -38,10 +39,39 @@ void execute(int argc, char **argv)
 	else
 	{
 		dir = opendir(argv[1]);
-		while ((read = readdir(dir)) != NULL)
+		if (dir)
 		{
-			printf("%s\n", read->d_name);
+			while ((read = readdir(dir)) != NULL)
+			{
+				printf("%s\n", read->d_name);
+			}
 		}
+		else
+		{
+			fprintf(stderr, "%s: %s '%s': ", argv[0], error_message(errno), argv[1]);
+			perror("");
+			execution_return = 2;
+		}		
 	}
 	closedir(dir);
+	return(execution_return);
+}
+
+char *error_message(int error) {
+	char *error_messages[3] = {
+		"",
+		"cannot access",
+		"cannot open directory"
+	};
+
+	switch (error)
+	{
+	case 2:
+		return error_messages[1];
+	case 13:
+		return error_messages[2];
+	default:
+		return error_messages[0];
+		break;
+	}
 }
