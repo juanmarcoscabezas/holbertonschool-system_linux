@@ -6,8 +6,9 @@ void execute(int, char **);
 
 /**
  * main - Entry point
- * @void: Application parameter
- * Return: Always 0, -1 otherwise
+ * @argc: Application parameters length
+ * @argv: Application parameters
+ * Return: Always 0
  */
 int main(int argc, char **argv)
 {
@@ -15,6 +16,12 @@ int main(int argc, char **argv)
 	return (0);
 }
 
+/**
+ * execute - Execute's opendir
+ * @argc: Application parameters length
+ * @argv: Application parameters
+ * Return: Always 0
+ */
 void execute(int argc, char **argv)
 {
 	DIR *dir;
