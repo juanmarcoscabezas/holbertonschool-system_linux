@@ -5,6 +5,8 @@
 
 int execute(int, char **);
 char *error_message(int);
+int opendir_loop(char **argv, char *dir_name);
+
 /**
  * main - Entry point
  * @argc: Application parameters length
@@ -24,36 +26,17 @@ int main(int argc, char **argv)
  */
 int execute(int argc, char **argv)
 {
-	DIR *dir;
-	struct dirent *read;
+	int argc_iterator;
 	int execution_return = 0;
 
 	if (argc <= 1)
 	{
-		dir = opendir(".");
-		while ((read = readdir(dir)) != NULL)
-		{
-			printf("%s\n", read->d_name);
-		}
+		execution_return = opendir_loop(argv, ".");
 	}
-	else
+	for (argc_iterator = 1; argc_iterator < argc; argc_iterator++)
 	{
-		dir = opendir(argv[1]);
-		if (dir)
-		{
-			while ((read = readdir(dir)) != NULL)
-			{
-				printf("%s\n", read->d_name);
-			}
-		}
-		else
-		{
-			fprintf(stderr, "%s: %s '%s': ", argv[0], error_message(errno), argv[1]);
-			perror("");
-			execution_return = 2;
-		}		
+		execution_return = opendir_loop(argv, argv[argc_iterator]);
 	}
-	closedir(dir);
 	return(execution_return);
 }
 
@@ -63,6 +46,8 @@ char *error_message(int error) {
 		"cannot access",
 		"cannot open directory"
 	};
+
+	printf("%d\n", error);
 
 	switch (error)
 	{
@@ -74,4 +59,26 @@ char *error_message(int error) {
 		return error_messages[0];
 		break;
 	}
+}
+
+int opendir_loop(char **argv, char *dir_name) {
+	DIR *dir;
+	struct dirent *read;	
+
+	dir = opendir(dir_name);
+
+	if (dir)
+	{
+		while ((read = readdir(dir)) != NULL)
+		{
+			printf("%s ", read->d_name);
+		}
+		printf("\n");
+		closedir(dir);
+		return(0);
+	}
+	fprintf(stderr, "%s: %s '%s': ", argv[0], error_message(errno), dir_name);
+	perror("");
+	closedir(dir);
+	return(2);
 }
