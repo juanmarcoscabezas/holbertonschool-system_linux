@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <stdio.h>
 #include <sys/types.h>
 #include <dirent.h>
@@ -5,7 +6,7 @@
 #include <string.h>
 
 int execute(int, char **);
-int opendir_loop(char **argv, char *dir_name);
+int get_opendir_dir_list(char **argv, char *dir_name);
 int search_options(char *);
 char *error_message(int);
 
@@ -30,37 +31,56 @@ int execute(int argc, char **argv)
 {
 	int argc_iterator;
 	int execution_return = 0;
+	// char options;
 
 	if (argc <= 1)
 	{
-		execution_return = opendir_loop(argv, ".");
+		execution_return = get_opendir_dir_list(argv, ".");
 	}
 	for (argc_iterator = 1; argc_iterator < argc; argc_iterator++)
 	{
-		if (search_options(argv[argc_iterator]) == 0)
-		{
-			execution_return = opendir_loop(argv, argv[argc_iterator]);
-		}
+		search_options(argv[argc_iterator]);
+		get_opendir_dir_list(argv, argv[argc_iterator]);
+
+		// if (search_options(argv[argc_iterator]) == 0)
+		// {
+		// 	execution_return = get_opendir_dir_list(argv, argv[argc_iterator]);
+		// }
 	}
 	return (execution_return);
 }
 
 int search_options(char *option)
 {
-	int opt_iterator;
+	int option_iterator;
+	size_t flags_iterator;
+	int option_length = 0;
+	int correct_flag = 0;
 
-	char *options[1] = {
-		"-l"};
+	char *flags = "aArStR1l";
+	// char flags_in_option[] = "00000000";
 
 	if (option[0] == '-')
 	{
-		for (opt_iterator = 0; opt_iterator < 1; opt_iterator++)
+		option_length = strlen(option);
+
+		for (option_iterator = 1; option_iterator < option_length; option_iterator++)
 		{
-			if (strcmp(options[opt_iterator], option) == 0)
+			for (flags_iterator = 0; flags_iterator < strlen(flags); flags_iterator++)
 			{
-				printf("We got the option %s\n", options[opt_iterator]);
-				return (1);
+				if (flags[flags_iterator] == option[option_iterator])
+				{
+					printf("%c\n", flags[flags_iterator]);
+					correct_flag = 1;
+					return(flags[flags_iterator]);
+				}
 			}
+			if (correct_flag == 0)
+			{
+				printf("The flag %c not exist\n", option[option_iterator]);
+				exit(0);
+			}
+			correct_flag = 0;
 		}
 	}
 	return (0);
@@ -86,10 +106,16 @@ char *error_message(int error)
 	}
 }
 
-int opendir_loop(char **argv, char *dir_name)
+int get_opendir_dir_list(char **argv, char *dir_name)
 {
 	DIR *dir;
 	struct dirent *read;
+	// struct dirent **dir_list;
+	// size_t list_increment = 1;
+	size_t list_index = 0;
+	size_t read_index = 0;
+	char **dir_list = NULL;
+	size_t iterator;
 
 	dir = opendir(dir_name);
 
@@ -99,8 +125,18 @@ int opendir_loop(char **argv, char *dir_name)
 
 		while ((read = readdir(dir)) != NULL)
 		{
-			printf("%s ", read->d_name);
+			dir_list = realloc(dir_list, (list_index + 1) * sizeof(char *));
+			dir_list[list_index] = strdup(read->d_name);
+			read_index++;
+			list_index++;
 		}
+		for (iterator = 0; iterator < list_index; iterator++)
+		{
+			printf("%s\n", dir_list[iterator]);
+			free(dir_list[iterator]);
+		}
+		free(dir_list);
+		
 		printf("\n\n");
 		closedir(dir);
 		return (0);
