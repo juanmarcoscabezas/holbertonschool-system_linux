@@ -37,23 +37,27 @@ int execute(int argc, char **argv)
 	}
 	for (argc_iterator = 1; argc_iterator < argc; argc_iterator++)
 	{
-		if (search_options(argv[argc_iterator]) == 0) {
+		if (search_options(argv[argc_iterator]) == 0)
+		{
 			execution_return = opendir_loop(argv, argv[argc_iterator]);
 		}
 	}
 	return (execution_return);
 }
 
-int search_options(char *option) {
+int search_options(char *option)
+{
 	int opt_iterator;
 
 	char *options[1] = {
 		"-l"};
 
-	if (option[0] == '-') {
+	if (option[0] == '-')
+	{
 		for (opt_iterator = 0; opt_iterator < 1; opt_iterator++)
 		{
-			if (strcmp(options[opt_iterator], option) == 0) {
+			if (strcmp(options[opt_iterator], option) == 0)
+			{
 				printf("We got the option %s\n", options[opt_iterator]);
 				return (1);
 			}
@@ -101,7 +105,8 @@ int opendir_loop(char **argv, char *dir_name)
 		closedir(dir);
 		return (0);
 	}
-	if (errno == 20) {
+	if (errno == 20)
+	{
 		printf("%s\n", dir_name);
 		return (0);
 	}
