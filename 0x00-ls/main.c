@@ -5,6 +5,8 @@
 #include <errno.h>
 #include <string.h>
 #include <ctype.h>
+#include <sys/stat.h>
+#include <time.h>
 
 int execute(int, char **);
 int get_opendir_dir_list(char **, char *, char);
@@ -122,6 +124,8 @@ int get_opendir_dir_list(char **argv, char *dir_name, char options)
 	size_t list_index = 0, read_index = 0, iterator, jiterator;
 	char **dir_list = NULL;
 	char *swap_string;
+	struct stat sb;
+	char dir_path[256];
 
 	dir = opendir(dir_name);
 
@@ -152,7 +156,21 @@ int get_opendir_dir_list(char **argv, char *dir_name, char options)
 
 		for (iterator = 0; iterator < list_index; iterator++)
 		{
-			if (options == '1')
+			if (options == 'l')
+			{
+				dir_path[0] = '\0';
+				strcat(dir_path, dir_name);
+				if (dir_name[strlen(dir_name) - 1] != '/')
+				{
+					strcat(dir_path, "/");
+				}
+				strcat(dir_path, dir_list[iterator]);				
+				if (stat(dir_path, &sb) != -1) {
+					printf("%ld bytes ", sb.st_size);
+				}
+				printf("statt %s\n", dir_list[iterator]);
+			}
+			else if (options == '1')
 			{
 				printf("%s\n", dir_list[iterator]);
 			}
