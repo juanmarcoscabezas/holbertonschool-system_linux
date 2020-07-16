@@ -4,11 +4,13 @@
 #include <dirent.h>
 #include <errno.h>
 #include <string.h>
+#include <ctype.h>
 
 int execute(int, char **);
-int get_opendir_dir_list(char **argv, char *dir_name);
-int search_options(char *);
+int get_opendir_dir_list(char **, char *, char);
+int get_options(char *);
 char *error_message(int);
+int _strcmp_ci(char *, char *);
 
 /**
  * main - Entry point
@@ -31,18 +33,26 @@ int execute(int argc, char **argv)
 {
 	int argc_iterator;
 	int execution_return = 0;
-	// char options;
+	char options;
 
+	for (argc_iterator = 1; argc_iterator < argc; argc_iterator++)
+	{
+		if (argv[argc_iterator][0] == '-')
+		{
+			options = get_options(argv[argc_iterator]);
+		}
+	}
 	if (argc <= 1)
 	{
-		execution_return = get_opendir_dir_list(argv, ".");
+		execution_return = get_opendir_dir_list(argv, ".", options);
 	}
 	for (argc_iterator = 1; argc_iterator < argc; argc_iterator++)
 	{
-		search_options(argv[argc_iterator]);
-		get_opendir_dir_list(argv, argv[argc_iterator]);
-
-		// if (search_options(argv[argc_iterator]) == 0)
+		if (argv[argc_iterator][0] != '-')
+		{
+			get_opendir_dir_list(argv, argv[argc_iterator], options);
+		}
+		// if (get_options(argv[argc_iterator]) == 0)
 		// {
 		// 	execution_return = get_opendir_dir_list(argv, argv[argc_iterator]);
 		// }
@@ -50,7 +60,7 @@ int execute(int argc, char **argv)
 	return (execution_return);
 }
 
-int search_options(char *option)
+int get_options(char *option)
 {
 	int option_iterator;
 	size_t flags_iterator;
@@ -70,7 +80,6 @@ int search_options(char *option)
 			{
 				if (flags[flags_iterator] == option[option_iterator])
 				{
-					printf("%c\n", flags[flags_iterator]);
 					correct_flag = 1;
 					return(flags[flags_iterator]);
 				}
@@ -106,16 +115,13 @@ char *error_message(int error)
 	}
 }
 
-int get_opendir_dir_list(char **argv, char *dir_name)
+int get_opendir_dir_list(char **argv, char *dir_name, char options)
 {
 	DIR *dir;
 	struct dirent *read;
-	// struct dirent **dir_list;
-	// size_t list_increment = 1;
-	size_t list_index = 0;
-	size_t read_index = 0;
+	size_t list_index = 0, read_index = 0, iterator, jiterator;
 	char **dir_list = NULL;
-	size_t iterator;
+	char *swap_string;
 
 	dir = opendir(dir_name);
 
@@ -130,9 +136,31 @@ int get_opendir_dir_list(char **argv, char *dir_name)
 			read_index++;
 			list_index++;
 		}
+
+		for (iterator = 0; iterator < list_index - 1; iterator++)
+		{
+			for (jiterator = 0; jiterator < list_index - iterator - 1; jiterator++)
+			{
+				if (_strcmp_ci(dir_list[jiterator], dir_list[jiterator + 1]) > 0)
+				{
+					swap_string = dir_list[jiterator];
+					dir_list[jiterator] = dir_list[jiterator + 1];
+					dir_list[jiterator + 1] = swap_string;
+				}
+			}	
+		}
+
 		for (iterator = 0; iterator < list_index; iterator++)
 		{
-			printf("%s\n", dir_list[iterator]);
+			if (options == '1')
+			{
+				printf("%s\n", dir_list[iterator]);
+			}
+			else
+			{
+				printf("%s ", dir_list[iterator]);
+			}
+			
 			free(dir_list[iterator]);
 		}
 		free(dir_list);
@@ -150,4 +178,25 @@ int get_opendir_dir_list(char **argv, char *dir_name)
 	perror("");
 	closedir(dir);
 	return (2);
+}
+
+/**
+ * _strcmp_ci - Compare strings case insensitive
+ * Description: This function compare two strings
+ * @s1: First string to compare
+ * @s2: Second string to compare
+ * Return: @n bytes of @src
+ */
+int _strcmp_ci(char *s1, char *s2)
+{
+	while (*s1 != '\0' && *s2 != '\0')
+	{
+		if (tolower(*s1) > tolower(*s2))
+			return (tolower(*s1) - tolower(*s2));
+		else if (tolower(*s2) > tolower(*s1))
+			return ( (tolower(*s2) - tolower(*s1) ) * -1);
+		s1++;
+		s2++;
+	}
+	return (0);
 }
