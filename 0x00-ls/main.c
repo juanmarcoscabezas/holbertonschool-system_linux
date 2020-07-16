@@ -13,6 +13,8 @@ int get_opendir_dir_list(char **, char *, char);
 int get_options(char *);
 char *error_message(int);
 int _strcmp_ci(char *, char *);
+char **get_directories(int, char **);
+char get_options_list(int, char **);
 
 /**
  * main - Entry point
@@ -33,68 +35,30 @@ int main(int argc, char **argv)
  */
 int execute(int argc, char **argv)
 {
-	int argc_iterator;
+	int dir_iterator;
 	int execution_return = 0;
 	char options;
+	char **directories = NULL;
 
-	for (argc_iterator = 1; argc_iterator < argc; argc_iterator++)
+	directories = get_directories(argc, argv);
+	options = get_options_list(argc, argv);
+
+	// if (argc <= 1)
+	// {
+	// 	execution_return = get_opendir_dir_list(argv, ".", options);
+	// }
+	for (dir_iterator = 0; directories[dir_iterator] != NULL; dir_iterator++)
 	{
-		if (argv[argc_iterator][0] == '-')
-		{
-			options = get_options(argv[argc_iterator]);
-		}
-	}
-	if (argc <= 1)
-	{
-		execution_return = get_opendir_dir_list(argv, ".", options);
-	}
-	for (argc_iterator = 1; argc_iterator < argc; argc_iterator++)
-	{
-		if (argv[argc_iterator][0] != '-')
-		{
-			get_opendir_dir_list(argv, argv[argc_iterator], options);
-		}
+		// if (argv[argc_iterator][0] != '-')
+		// {
+		get_opendir_dir_list(argv, directories[dir_iterator], options);
+		// }
 		// if (get_options(argv[argc_iterator]) == 0)
 		// {
 		// 	execution_return = get_opendir_dir_list(argv, argv[argc_iterator]);
 		// }
 	}
 	return (execution_return);
-}
-
-int get_options(char *option)
-{
-	int option_iterator;
-	size_t flags_iterator;
-	int option_length = 0;
-	int correct_flag = 0;
-
-	char *flags = "aArStR1l";
-	// char flags_in_option[] = "00000000";
-
-	if (option[0] == '-')
-	{
-		option_length = strlen(option);
-
-		for (option_iterator = 1; option_iterator < option_length; option_iterator++)
-		{
-			for (flags_iterator = 0; flags_iterator < strlen(flags); flags_iterator++)
-			{
-				if (flags[flags_iterator] == option[option_iterator])
-				{
-					correct_flag = 1;
-					return(flags[flags_iterator]);
-				}
-			}
-			if (correct_flag == 0)
-			{
-				printf("The flag %c not exist\n", option[option_iterator]);
-				exit(0);
-			}
-			correct_flag = 0;
-		}
-	}
-	return (0);
 }
 
 char *error_message(int error)
@@ -215,6 +179,89 @@ int _strcmp_ci(char *s1, char *s2)
 			return ( (tolower(*s2) - tolower(*s1) ) * -1);
 		s1++;
 		s2++;
+	}
+	return (0);
+}
+
+char **get_directories(int argc, char **argv)
+{
+	int iterator;
+	char **directories = NULL;
+	size_t directories_index = 0;
+
+	for (iterator = 1; iterator < argc; iterator++)
+	{
+		if (argv[iterator][0] != '-')
+		{
+			directories = realloc(directories, sizeof(char *) * (directories_index + 1));
+			directories[directories_index] = strdup(argv[iterator]);
+			printf("%s\n", directories[directories_index]);
+			directories_index++;
+		}
+		if (strlen(argv[iterator]) == 2)
+		{
+			if (argv[iterator][0] == '-' && argv[iterator][1] == '-')
+			{
+				directories = realloc(directories, sizeof(char *) * (directories_index + 1));
+				directories[directories_index] = strdup(argv[iterator]);
+				printf("%s\n", directories[directories_index]);
+				directories_index++;
+			}
+		}
+	}
+	if (directories_index == 0)
+	{
+		directories = realloc(directories, sizeof(char *) * (directories_index + 1));
+		directories[directories_index] = strdup(".");
+	}
+	return (directories);
+}
+
+char get_options_list(int argc, char **argv)
+{
+	int argc_iterator;
+
+	for (argc_iterator = 1; argc_iterator < argc; argc_iterator++)
+	{
+		if (argv[argc_iterator][0] == '-')
+		{
+			return(get_options(argv[argc_iterator]));
+		}
+	}
+	return ('\0');
+}
+
+int get_options(char *option)
+{
+	int option_iterator;
+	size_t flags_iterator;
+	int option_length = 0;
+	int correct_flag = 0;
+
+	char *flags = "aArStR1l";
+	// char flags_in_option[] = "00000000";
+
+	if (option[0] == '-')
+	{
+		option_length = strlen(option);
+
+		for (option_iterator = 1; option_iterator < option_length; option_iterator++)
+		{
+			for (flags_iterator = 0; flags_iterator < strlen(flags); flags_iterator++)
+			{
+				if (flags[flags_iterator] == option[option_iterator])
+				{
+					correct_flag = 1;
+					return(flags[flags_iterator]);
+				}
+			}
+			if (correct_flag == 0)
+			{
+				printf("The flag %c not exist\n", option[option_iterator]);
+				exit(0);
+			}
+			correct_flag = 0;
+		}
 	}
 	return (0);
 }
