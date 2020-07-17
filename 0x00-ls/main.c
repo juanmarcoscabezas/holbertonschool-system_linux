@@ -19,7 +19,7 @@ int main(int argc, char **argv)
  */
 int execute(int argc, char **argv)
 {
-	int execution_return = 0, aux_return = 0;
+	int execution_return = 0, aux_return;
 	size_t dir_iterator = 0;
 	LS_Struct_t ls_struct;
 
@@ -59,6 +59,7 @@ int opendir_current_in_argv(
 	char **dir_list = NULL;
 	int execution_return = 0;
 
+	errno = 0;
 	dir = opendir(dir_name);
 
 	if (dir)
