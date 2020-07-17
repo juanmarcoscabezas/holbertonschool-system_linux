@@ -70,8 +70,9 @@ void print_unrecognized_option(char *option, int correct_flag)
 {
 	if (correct_flag == 0)
 	{
-		fprintf(stderr, "hls: unrecognized option '%s'\n", option);
-		fprintf(stderr, "Try 'hls --help' for more information.\n");
+		fprintf(stderr,
+		"hls: unrecognized option '%s'\nTry 'hls --help' for more information.\n",
+		option);
 		exit(2);
 	}
 }
@@ -87,8 +88,9 @@ void print_invalid_option(char *option, int correct_flag, int option_iterator)
 {
 	if (correct_flag == 0)
 	{
-		fprintf(stderr, "hls: invalid option -- '%c'\n", option[option_iterator]);
-		fprintf(stderr, "Try 'hls --help' for more information.\n");
+		fprintf(stderr,
+		"hls: invalid option -- '%c'\nTry 'hls --help' for more information.\n",
+		option[option_iterator]);
 		exit(2);
 	}
 }

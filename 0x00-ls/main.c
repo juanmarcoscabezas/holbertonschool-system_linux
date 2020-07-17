@@ -23,9 +23,9 @@ int execute(int argc, char **argv)
 	size_t dir_iterator = 0;
 	LS_Struct_t ls_struct;
 
+	ls_struct.options = get_options_list(argc, argv);
 	ls_struct.directories = get_directories(
 		argc, argv, &ls_struct.directories_number);
-	ls_struct.options = get_options_list(argc, argv);
 
 	for (
 		dir_iterator = 0;
