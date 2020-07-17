@@ -133,6 +133,10 @@ void print_directories_with_parameters(
 			if (dir_list[iterator][0] != '.')
 				printf("%s\n", dir_list[iterator]);
 		}
+		else if (options == 'a')
+		{
+			printf("%s  ", dir_list[iterator]);
+		}
 		else
 		{
 			if (dir_list[iterator][0] != '.')
