@@ -35,7 +35,7 @@ int execute(int argc, char **argv)
 		aux_return = opendir_current_in_argv(
 			argv, ls_struct.directories[dir_iterator],
 			ls_struct.options, ls_struct.directories_number);
-		if (aux_return > execution_return)
+		if (aux_return != 0)
 			execution_return = aux_return;
 		free(ls_struct.directories[dir_iterator]);
 	}
