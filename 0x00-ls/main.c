@@ -1,20 +1,4 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <sys/types.h>
-#include <dirent.h>
-#include <errno.h>
-#include <string.h>
-#include <ctype.h>
-#include <sys/stat.h>
-#include <time.h>
-
-int execute(int, char **);
-int get_opendir_dir_list(char **, char *, char);
-int get_options(char *);
-char *error_message(int);
-int _strcmp_ci(char *, char *);
-char **get_directories(int, char **);
-char get_options_list(int, char **);
+#include "header.h"
 
 /**
  * main - Entry point
@@ -35,233 +19,129 @@ int main(int argc, char **argv)
  */
 int execute(int argc, char **argv)
 {
-	int dir_iterator;
-	int execution_return = 0;
-	char options;
-	char **directories = NULL;
+	int execution_return = 0, aux_return = 0;
+	size_t dir_iterator = 0;
+	LS_Struct_t ls_struct;
 
-	directories = get_directories(argc, argv);
-	options = get_options_list(argc, argv);
+	ls_struct.directories = get_directories(
+		argc, argv, &ls_struct.directories_number);
+	ls_struct.options = get_options_list(argc, argv);
 
-	// if (argc <= 1)
-	// {
-	// 	execution_return = get_opendir_dir_list(argv, ".", options);
-	// }
-	for (dir_iterator = 0; directories[dir_iterator] != NULL; dir_iterator++)
+	for (
+		dir_iterator = 0;
+		dir_iterator < ls_struct.directories_number;
+		dir_iterator++)
 	{
-		// if (argv[argc_iterator][0] != '-')
-		// {
-		get_opendir_dir_list(argv, directories[dir_iterator], options);
-		// }
-		// if (get_options(argv[argc_iterator]) == 0)
-		// {
-		// 	execution_return = get_opendir_dir_list(argv, argv[argc_iterator]);
-		// }
+		aux_return = opendir_current_in_argv(
+			argv, ls_struct.directories[dir_iterator],
+			ls_struct.options, ls_struct.directories_number);
+		if (aux_return > execution_return)
+			execution_return = aux_return;
+		free(ls_struct.directories[dir_iterator]);
 	}
+	free(ls_struct.directories);
 	return (execution_return);
 }
 
-char *error_message(int error)
-{
-	char *error_messages[3] = {
-		"",
-		"cannot access",
-		"cannot open directory"};
-
-	/*printf("%d\n", error);*/
-
-	switch (error)
-	{
-	case 2:
-		return (error_messages[1]);
-	case 13:
-		return (error_messages[2]);
-	default:
-		return (error_messages[0]);
-	}
-}
-
-int get_opendir_dir_list(char **argv, char *dir_name, char options)
+/**
+ * opendir_current_in_argv - Opens an user input directory
+ * @argv: Application parameters
+ * @dir_name: Name of the directory
+ * @options: List of options
+ * @directories_number: Number of directories
+ * Return: 0 on success, 2 otherwise
+ */
+int opendir_current_in_argv(
+	char **argv, char *dir_name, char options, size_t directories_number)
 {
 	DIR *dir;
-	struct dirent *read;
-	size_t list_index = 0, read_index = 0, iterator, jiterator;
+	size_t list_index = 0;
 	char **dir_list = NULL;
-	char *swap_string;
-	struct stat sb;
-	char dir_path[256];
+	int execution_return = 0;
 
 	dir = opendir(dir_name);
 
 	if (dir)
 	{
-		printf("%s:\n", dir_name);
-
-		while ((read = readdir(dir)) != NULL)
-		{
-			dir_list = realloc(dir_list, (list_index + 1) * sizeof(char *));
-			dir_list[list_index] = strdup(read->d_name);
-			read_index++;
-			list_index++;
-		}
-
-		for (iterator = 0; iterator < list_index - 1; iterator++)
-		{
-			for (jiterator = 0; jiterator < list_index - iterator - 1; jiterator++)
-			{
-				if (_strcmp_ci(dir_list[jiterator], dir_list[jiterator + 1]) > 0)
-				{
-					swap_string = dir_list[jiterator];
-					dir_list[jiterator] = dir_list[jiterator + 1];
-					dir_list[jiterator + 1] = swap_string;
-				}
-			}	
-		}
-
-		for (iterator = 0; iterator < list_index; iterator++)
-		{
-			if (options == 'l')
-			{
-				dir_path[0] = '\0';
-				strcat(dir_path, dir_name);
-				if (dir_name[strlen(dir_name) - 1] != '/')
-				{
-					strcat(dir_path, "/");
-				}
-				strcat(dir_path, dir_list[iterator]);				
-				if (stat(dir_path, &sb) != -1) {
-					printf("%ld bytes ", sb.st_size);
-				}
-				printf("statt %s\n", dir_list[iterator]);
-			}
-			else if (options == '1')
-			{
-				printf("%s\n", dir_list[iterator]);
-			}
-			else
-			{
-				printf("%s ", dir_list[iterator]);
-			}
-			
-			free(dir_list[iterator]);
-		}
+		print_dirname_at_start(dir_name, directories_number);
+		dir_list = readdir_get_directories(dir, &list_index);
+		sort_directories_list_by_name(dir_list, list_index);
+		print_directories_with_parameters(dir_list, dir_name, options, list_index);
+		print_endofline_at_end(directories_number);
 		free(dir_list);
-		
-		printf("\n\n");
 		closedir(dir);
 		return (0);
 	}
-	if (errno == 20)
-	{
-		printf("%s\n", dir_name);
-		return (0);
-	}
-	fprintf(stderr, "%s: %s '%s': ", argv[0], error_message(errno), dir_name);
-	perror("");
+	execution_return = show_error_messages(argv, dir_name, directories_number);
 	closedir(dir);
-	return (2);
+	return (execution_return);
 }
 
 /**
- * _strcmp_ci - Compare strings case insensitive
- * Description: This function compare two strings
- * @s1: First string to compare
- * @s2: Second string to compare
- * Return: @n bytes of @src
+ * readdir_get_directories - Gets the directories list
+ * @dir: The current oppened directory
+ * @list_index: Size of directories_list
+ * Return: List of directories
  */
-int _strcmp_ci(char *s1, char *s2)
+char **readdir_get_directories(DIR *dir, size_t *list_index)
 {
-	while (*s1 != '\0' && *s2 != '\0')
+	struct dirent *read;
+	char **dir_list = NULL;
+
+	while ((read = readdir(dir)) != NULL)
 	{
-		if (tolower(*s1) > tolower(*s2))
-			return (tolower(*s1) - tolower(*s2));
-		else if (tolower(*s2) > tolower(*s1))
-			return ( (tolower(*s2) - tolower(*s1) ) * -1);
-		s1++;
-		s2++;
+		dir_list = realloc(dir_list, (*list_index + 1) * sizeof(char *));
+		dir_list[*list_index] = strdup(read->d_name);
+		*list_index = *list_index + 1;
 	}
-	return (0);
+	return (dir_list);
 }
 
-char **get_directories(int argc, char **argv)
+/**
+ * print_directories_with_parameters - Prints the files in a directory
+ * with the parameters
+ * @dir_list: Files/directories inside the current directory
+ * @dir_name: Current directory name
+ * @options: The user options
+ * @list_index: Size of the @dir_list
+ * Return:
+ */
+void print_directories_with_parameters(
+	char **dir_list, char *dir_name, char options, size_t list_index)
 {
-	int iterator;
-	char **directories = NULL;
-	size_t directories_index = 0;
+	size_t iterator;
+	char dir_path[256];
+	struct stat sb;
 
-	for (iterator = 1; iterator < argc; iterator++)
+	for (iterator = 0; iterator < list_index; iterator++)
 	{
-		if (argv[iterator][0] != '-')
+		if (options == 'l')
 		{
-			directories = realloc(directories, sizeof(char *) * (directories_index + 1));
-			directories[directories_index] = strdup(argv[iterator]);
-			printf("%s\n", directories[directories_index]);
-			directories_index++;
-		}
-		if (strlen(argv[iterator]) == 2)
-		{
-			if (argv[iterator][0] == '-' && argv[iterator][1] == '-')
+			dir_path[0] = '\0';
+			strcat(dir_path, dir_name);
+			if (dir_name[strlen(dir_name) - 1] != '/')
 			{
-				directories = realloc(directories, sizeof(char *) * (directories_index + 1));
-				directories[directories_index] = strdup(argv[iterator]);
-				printf("%s\n", directories[directories_index]);
-				directories_index++;
+				strcat(dir_path, "/");
+			}
+			strcat(dir_path, dir_list[iterator]);
+			if (stat(dir_path, &sb) != -1)
+			{
+				printf("%ld bytes ", sb.st_size);
+			}
+			printf("%s\n", dir_list[iterator]);
+		}
+		else if (options == '1')
+		{
+			printf("%s\n", dir_list[iterator]);
+		}
+		else
+		{
+			if (dir_list[iterator][0] != '.')
+			{
+				printf("%s ", dir_list[iterator]);
 			}
 		}
+
+		free(dir_list[iterator]);
 	}
-	if (directories_index == 0)
-	{
-		directories = realloc(directories, sizeof(char *) * (directories_index + 1));
-		directories[directories_index] = strdup(".");
-	}
-	return (directories);
-}
-
-char get_options_list(int argc, char **argv)
-{
-	int argc_iterator;
-
-	for (argc_iterator = 1; argc_iterator < argc; argc_iterator++)
-	{
-		if (argv[argc_iterator][0] == '-')
-		{
-			return(get_options(argv[argc_iterator]));
-		}
-	}
-	return ('\0');
-}
-
-int get_options(char *option)
-{
-	int option_iterator;
-	size_t flags_iterator;
-	int option_length = 0;
-	int correct_flag = 0;
-
-	char *flags = "aArStR1l";
-	// char flags_in_option[] = "00000000";
-
-	if (option[0] == '-')
-	{
-		option_length = strlen(option);
-
-		for (option_iterator = 1; option_iterator < option_length; option_iterator++)
-		{
-			for (flags_iterator = 0; flags_iterator < strlen(flags); flags_iterator++)
-			{
-				if (flags[flags_iterator] == option[option_iterator])
-				{
-					correct_flag = 1;
-					return(flags[flags_iterator]);
-				}
-			}
-			if (correct_flag == 0)
-			{
-				printf("The flag %c not exist\n", option[option_iterator]);
-				exit(0);
-			}
-			correct_flag = 0;
-		}
-	}
-	return (0);
 }
