@@ -56,6 +56,7 @@ int opendir_current_in_argv(
 	size_t list_index = 0;
 	char **dir_list = NULL;
 	int execution_return = 0;
+	static size_t num_errors = 1;
 
 	dir = opendir(dir_name);
 
@@ -68,12 +69,16 @@ int opendir_current_in_argv(
 			dir_list,
 			dir_name, options,
 			list_index,
-			directories_number);
+			directories_number,
+			num_errors);
 		free(dir_list);
 		closedir(dir);
 		return (0);
 	}
 	execution_return = show_error_messages(argv, dir_name, directories_number);
+	if (execution_return > 0)
+		num_errors++;
+
 	closedir(dir);
 	return (execution_return);
 }
@@ -106,12 +111,14 @@ char **readdir_get_directories(DIR *dir, size_t *list_index)
  * @options: The user options
  * @list_index: Size of the @dir_list
  * @directories_number: Amount of directories
+ * @num_errors: Number of errors
  * Return:
  */
 void print_directories_with_parameters(
 	char **dir_list, char *dir_name,
 	char options, size_t list_index,
-	size_t directories_number)
+	size_t directories_number,
+	size_t num_errors)
 {
 	size_t iterator;
 	char dir_path[256];
@@ -150,5 +157,5 @@ void print_directories_with_parameters(
 		}
 		free(dir_list[iterator]);
 	}
-	print_endofline_at_end(directories_number, options);
+	print_endofline_at_end(directories_number, options, num_errors);
 }
