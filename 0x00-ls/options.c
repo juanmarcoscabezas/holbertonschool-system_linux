@@ -38,20 +38,10 @@ int get_options(char *option)
 
 	if (option[0] == '-')
 	{
-		if (strlen(option) > 3)
+		if (strlen(option) >= 3)
 		{
 			if (option[1] == '-')
-			{
 				print_unrecognized_option(option, correct_flag);
-			}
-		}
-		if (strlen(option) == 3)
-		{
-			for (flags_iterator = 0; flags_iterator < strlen(flags); flags_iterator++)
-				if (option[2] == flags[flags_iterator])
-					correct_flag = 1;
-			print_unrecognized_option(option, correct_flag);
-			correct_flag = 0;
 		}
 		for (option_iterator = 1; option_iterator < option_length; option_iterator++)
 		{
@@ -80,8 +70,8 @@ void print_unrecognized_option(char *option, int correct_flag)
 {
 	if (correct_flag == 0)
 	{
-		fprintf(stderr, "./hls: unrecognized option '%s'\n", option);
-		fprintf(stderr, "Try './hls --help' for more information.\n");
+		fprintf(stderr, "hls: unrecognized option '%s'\n", option);
+		fprintf(stderr, "Try 'hls --help' for more information.\n");
 		exit(2);
 	}
 }
@@ -97,8 +87,8 @@ void print_invalid_option(char *option, int correct_flag, int option_iterator)
 {
 	if (correct_flag == 0)
 	{
-		fprintf(stderr, "./hls: invalid option -- '%c'\n", option[option_iterator]);
-		fprintf(stderr, "Try './hls --help' for more information.\n");
+		fprintf(stderr, "hls: invalid option -- '%c'\n", option[option_iterator]);
+		fprintf(stderr, "Try 'hls --help' for more information.\n");
 		exit(2);
 	}
 }
