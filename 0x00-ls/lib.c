@@ -18,7 +18,7 @@ int show_error_messages(char **argv, char *dir_name, size_t directories_number)
 	}
 	fprintf(stderr, "%s: %s '%s': ", argv[0], error_message(errno), dir_name);
 	perror("");
-	return (2);
+	return (errno);
 }
 
 /**
