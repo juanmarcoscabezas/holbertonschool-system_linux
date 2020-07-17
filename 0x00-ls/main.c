@@ -19,7 +19,7 @@ int main(int argc, char **argv)
  */
 int execute(int argc, char **argv)
 {
-	int execution_return = 0, aux_return;
+	int execution_return = 0, aux_return = 0;
 	size_t dir_iterator = 0;
 	LS_Struct_t ls_struct;
 
@@ -35,7 +35,7 @@ int execute(int argc, char **argv)
 		aux_return = opendir_current_in_argv(
 			argv, ls_struct.directories[dir_iterator],
 			ls_struct.options, ls_struct.directories_number);
-		if (aux_return != 0)
+		if (aux_return > execution_return)
 			execution_return = aux_return;
 		free(ls_struct.directories[dir_iterator]);
 	}
@@ -59,7 +59,6 @@ int opendir_current_in_argv(
 	char **dir_list = NULL;
 	int execution_return = 0;
 
-	errno = 0;
 	dir = opendir(dir_name);
 
 	if (dir)

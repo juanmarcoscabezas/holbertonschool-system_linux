@@ -9,7 +9,7 @@
  */
 int show_error_messages(char **argv, char *dir_name, size_t directories_number)
 {
-	if (errno == ENOTDIR)
+	if (errno == 20)
 	{
 		printf("%s\n", dir_name);
 		if (directories_number > 1)
@@ -35,9 +35,9 @@ char *error_message(int error)
 
 	switch (error)
 	{
-	case ENOENT:
+	case 2:
 		return (error_messages[1]);
-	case EACCES:
+	case 13:
 		return (error_messages[2]);
 	default:
 		return (error_messages[0]);
