@@ -9,7 +9,6 @@
  */
 int show_error_messages(char **argv, char *dir_name, size_t directories_number)
 {
-	printf("ERROR %d\n", errno);
 	if (errno == ENOTDIR)
 	{
 		printf("%s\n", dir_name);
