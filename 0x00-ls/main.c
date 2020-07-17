@@ -64,8 +64,11 @@ int opendir_current_in_argv(
 		print_dirname_at_start(dir_name, directories_number);
 		dir_list = readdir_get_directories(dir, &list_index);
 		sort_directories_list_by_name(dir_list, list_index);
-		print_directories_with_parameters(dir_list, dir_name, options, list_index);
-		print_endofline_at_end(directories_number);
+		print_directories_with_parameters(
+			dir_list,
+			dir_name, options,
+			list_index,
+			directories_number);
 		free(dir_list);
 		closedir(dir);
 		return (0);
@@ -102,10 +105,13 @@ char **readdir_get_directories(DIR *dir, size_t *list_index)
  * @dir_name: Current directory name
  * @options: The user options
  * @list_index: Size of the @dir_list
+ * @directories_number: Amount of directories
  * Return:
  */
 void print_directories_with_parameters(
-	char **dir_list, char *dir_name, char options, size_t list_index)
+	char **dir_list, char *dir_name,
+	char options, size_t list_index,
+	size_t directories_number)
 {
 	size_t iterator;
 	char dir_path[256];
@@ -142,7 +148,7 @@ void print_directories_with_parameters(
 			if (dir_list[iterator][0] != '.')
 				printf("%s  ", dir_list[iterator]);
 		}
-
 		free(dir_list[iterator]);
 	}
+	print_endofline_at_end(directories_number, options);
 }
