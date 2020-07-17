@@ -22,13 +22,20 @@ char **get_directories(int argc, char **argv, size_t *directories_number)
 			directories[directories_index] = strdup(argv[iterator]);
 			directories_index++;
 		}
+		if (argv[iterator][0] == '-' && strlen(argv[iterator]) == 1)
+		{
+			directories = realloc(directories,
+								  sizeof(char *) * (directories_index + 1));
+			directories[directories_index] = strdup(argv[iterator]);
+			directories_index++;
+		}
 		if (strlen(argv[iterator]) == 2)
 		{
 			if (argv[iterator][0] == '-' && argv[iterator][1] == '-')
 			{
 				directories = realloc(directories,
 									  sizeof(char *) * (directories_index + 1));
-				directories[directories_index] = strdup(argv[iterator]);
+				directories[directories_index] = strdup(".");
 				directories_index++;
 			}
 		}

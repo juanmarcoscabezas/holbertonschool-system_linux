@@ -28,6 +28,9 @@ char **get_directories(int, char **, size_t *);
 void print_dirname_at_start(char *, int);
 void print_endofline_at_end(char directories_number);
 
+void print_invalid_option(char *, int, int);
+void print_unrecognized_option(char *, int);
+
 /**
  * struct LS_Struct - Ls command struct
  * @directories: List of directories in argv
