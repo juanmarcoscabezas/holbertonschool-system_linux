@@ -138,7 +138,7 @@ void print_directories_with_parameters(
 		{
 			if (dir_list[iterator][0] != '.')
 			{
-				printf("%s ", dir_list[iterator]);
+				printf("%s  ", dir_list[iterator]);
 			}
 		}
 

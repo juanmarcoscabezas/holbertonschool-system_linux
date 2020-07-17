@@ -12,10 +12,11 @@ char get_options_list(int argc, char **argv)
 
 	for (argc_iterator = 1; argc_iterator < argc; argc_iterator++)
 	{
+		if (strlen(argv[argc_iterator]) == 2)
+			if (argv[argc_iterator][0] == '-' && argv[argc_iterator][1] == '-')
+				return ('\0');
 		if (argv[argc_iterator][0] == '-')
-		{
 			return (get_options(argv[argc_iterator]));
-		}
 	}
 	return ('\0');
 }
@@ -50,8 +51,9 @@ int get_options(char *option)
 			}
 			if (correct_flag == 0)
 			{
-				printf("The flag %c not exist\n", option[option_iterator]);
-				exit(0);
+				printf("./hls: invalid option -- '%c'\n", option[option_iterator]);
+				printf("Try './hls --help' for more information.\n");
+				exit(2);
 			}
 			correct_flag = 0;
 		}
