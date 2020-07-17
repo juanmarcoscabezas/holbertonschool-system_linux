@@ -9,6 +9,7 @@
  */
 int show_error_messages(char **argv, char *dir_name, size_t directories_number)
 {
+	(void) argv;
 	if (errno == 20)
 	{
 		printf("%s\n", dir_name);
@@ -16,7 +17,7 @@ int show_error_messages(char **argv, char *dir_name, size_t directories_number)
 			printf("\n");
 		return (0);
 	}
-	fprintf(stderr, "%s: %s '%s': ", argv[0], error_message(errno), dir_name);
+	fprintf(stderr, "hls: %s %s: ", error_message(errno), dir_name);
 	perror("");
 	return (errno);
 }
