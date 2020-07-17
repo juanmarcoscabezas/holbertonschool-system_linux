@@ -30,8 +30,8 @@ char *error_message(int error)
 {
 	char *error_messages[3] = {
 		"",
-		"cannot acces",
-		"cannot open director"};
+		"cannot access",
+		"cannot open directory"};
 
 	switch (error)
 	{
