@@ -29,7 +29,8 @@ void print_endofline_at_end(
 	if (option != 'l' && option != '1')
 	{
 		if (
-			directories_number > 1 && actual_number < directories_number - num_errors)
+			directories_number > 1
+			&& actual_number < directories_number - num_errors + 1)
 			printf("\n\n");
 		else
 			printf("\n");
@@ -37,7 +38,8 @@ void print_endofline_at_end(
 		return;
 	}
 	else if (
-		directories_number > 1 && actual_number < directories_number - num_errors)
+		directories_number > 1
+		&& actual_number < directories_number - num_errors + 1)
 		printf("\n");
 
 	actual_number++;
