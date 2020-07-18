@@ -68,7 +68,18 @@ void print_directories_with_parameters(
 	char *, char, size_t, LS_Struct_t, size_t);
 char **readdir_get_directories(DIR *, size_t *);
 void print_dirname_at_start(char *, LS_Struct_t);
+
+/*
+ * Print_format_options
+ */
 void flag_l(char *, char *, char **, size_t);
+void flag_a(char **, char *, char *, size_t,
+	char,
+	size_t);
+void flag_A(
+	char **,
+	size_t,
+	size_t);
 
 /*
  * Sort

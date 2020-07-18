@@ -79,28 +79,10 @@ void print_directories_with_parameters(
 	for (iterator = 0; iterator < list_index; iterator++)
 	{
 		if (options == 'a')
-		{
-			if (options == 'l')
-				flag_l(dir_path, dir_name, dir_list, iterator);
-			if (jump == 1)
-				printf("%s\n", dir_list[iterator]);
-			else
-				printf("%s  ", dir_list[iterator]);
-		}
+			flag_a(dir_list, dir_path, dir_name,
+				iterator, options, jump);
 		else if (options == 'A')
-		{
-			if (dir_list[iterator][0] == '.' && strlen(dir_list[iterator]) == 1)
-				continue;
-			else if (strlen(dir_list[iterator]) == 2)
-			{
-				if ((dir_list[iterator][0] == '.') && (dir_list[iterator][1] == '.'))
-					continue;
-			}
-			if (jump == 1)
-				printf("%s\n", dir_list[iterator]);
-			else
-				printf("%s  ", dir_list[iterator]);
-		}
+			flag_A(dir_list, iterator, jump);
 		else
 		{
 			if (dir_list[iterator][0] != '.')
@@ -137,29 +119,4 @@ char **readdir_get_directories(DIR *dir, size_t *list_index)
 		*list_index = *list_index + 1;
 	}
 	return (dir_list);
-}
-
-/**
- * flag_l - ls flag -l
- * @dir_path: Directory path
- * @dir_name: Directory name
- * @dir_list: Directories list
- * @iterator: Actual position in @dir_list
- * Return:
- */
-void flag_l(char *dir_path, char *dir_name, char **dir_list, size_t iterator)
-{
-	struct stat sb;
-
-	dir_path[0] = '\0';
-	strcat(dir_path, dir_name);
-	if (dir_name[strlen(dir_name) - 1] != '/')
-	{
-		strcat(dir_path, "/");
-	}
-	strcat(dir_path, dir_list[iterator]);
-	if (stat(dir_path, &sb) != -1)
-	{
-		printf("%ld bytes ", sb.st_size);
-	}
 }
