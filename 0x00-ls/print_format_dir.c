@@ -80,10 +80,10 @@ void print_directories_with_parameters(
 	{
 		if (options == 'a')
 		{
-			if (options == 'l')
-				flag_l(dir_path, dir_name, dir_list, iterator);
 			if (jump == 1)
 				printf("%s\n", dir_list[iterator]);
+			else
+				printf("%s  ", dir_list[iterator]);
 		}
 		else if (options == 'A')
 		{
