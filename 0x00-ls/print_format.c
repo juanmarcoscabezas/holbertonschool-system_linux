@@ -1,5 +1,10 @@
 #include "header.h"
 
+/**
+ * print_directories - Prints directories
+ * @ls_struct: Struct that contains all the parameters
+ * Return:
+ */
 void print_directories(LS_Struct_t ls_struct)
 {
 	size_t iterator;
@@ -16,6 +21,11 @@ void print_directories(LS_Struct_t ls_struct)
 	}
 }
 
+/**
+ * print_files - Prints files
+ * @ls_struct: Struct that contains all the parameters
+ * Return:
+ */
 void print_files(LS_Struct_t ls_struct)
 {
 	size_t iterator;
@@ -45,6 +55,11 @@ void print_files(LS_Struct_t ls_struct)
 	}
 }
 
+/**
+ * print_errors_access - Prints access errors
+ * @ls_struct: Struct that contains all the parameters
+ * Return:
+ */
 void print_errors_access(LS_Struct_t ls_struct)
 {
 	size_t iterator;
@@ -54,11 +69,18 @@ void print_errors_access(LS_Struct_t ls_struct)
 		iterator < ls_struct.error_access_number;
 		iterator++)
 	{
-		fprintf(stderr, "hls: cannot access %s: No such file or directory\n", ls_struct.error_access[iterator]);
+		fprintf(stderr,
+		"hls: cannot access %s: No such file or directory\n",
+		ls_struct.error_access[iterator]);
 		free(ls_struct.error_access[iterator]);
 	}
 }
 
+/**
+ * print_errors_open - Prints open file errors
+ * @ls_struct: Struct that contains all the parameters
+ * Return:
+ */
 void print_errors_open(LS_Struct_t ls_struct)
 {
 	size_t iterator;
@@ -68,7 +90,9 @@ void print_errors_open(LS_Struct_t ls_struct)
 		iterator < ls_struct.error_open_number;
 		iterator++)
 	{
-		fprintf(stderr, "hls: cannot open %s: Permission denied\n", ls_struct.error_open[iterator]);
+		fprintf(stderr,
+		"hls: cannot open %s: Permission denied\n",
+		ls_struct.error_open[iterator]);
 		free(ls_struct.error_open[iterator]);
 	}
 }

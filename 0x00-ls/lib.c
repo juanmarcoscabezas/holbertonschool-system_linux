@@ -21,6 +21,11 @@ int _strcmp_ci(char *s1, char *s2)
 	return (0);
 }
 
+/**
+ * free_struct - Frees the main struct
+ * @ls_struct: Struct that contains all the parameters
+ * Return:
+ */
 void free_struct(LS_Struct_t ls_struct)
 {
 	if (ls_struct.directories)

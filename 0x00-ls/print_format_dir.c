@@ -2,10 +2,8 @@
 
 /**
  * opendir_current_in_argv - Opens an user input directory
- * @argv: Application parameters
  * @dir_name: Name of the directory
- * @options: List of options
- * @directories_number: Number of directories
+ * @ls_struct: Struct that contains all the parameters
  * Return: 0 on success, 2 otherwise
  */
 int get_files_in_dir(
@@ -39,12 +37,15 @@ int get_files_in_dir(
 /**
  * print_dirname_at_start - Prints the dirname
  * @dir_name: The directory name
- * @directories_number: The number of direcories
+ * @ls_struct: Struct that contains all the parameters
  * Return:
  */
 void print_dirname_at_start(char *dir_name, LS_Struct_t ls_struct)
 {
-	if (ls_struct.directories_number > 1 || ls_struct.files_number > 0 || ls_struct.error_access_number > 0 || ls_struct.error_open_number > 0)
+	if (ls_struct.directories_number > 1
+	|| ls_struct.files_number > 0
+	|| ls_struct.error_access_number > 0
+	|| ls_struct.error_open_number > 0)
 		printf("%s:\n", dir_name);
 }
 
@@ -55,8 +56,7 @@ void print_dirname_at_start(char *dir_name, LS_Struct_t ls_struct)
  * @dir_name: Current directory name
  * @options: The user options
  * @list_index: Size of the @dir_list
- * @directories_number: Amount of directories
- * @num_errors: Number of errors
+ * @ls_struct: Struct that contains all the parameters
  * Return:
  */
 void print_directories_with_parameters(
@@ -66,35 +66,31 @@ void print_directories_with_parameters(
 {
 	size_t iterator;
 	char dir_path[256];
-	struct stat sb;
 
 	for (iterator = 0; iterator < list_index; iterator++)
 	{
 		if (options == 'l')
+			flag_l(dir_path, dir_name, dir_list, iterator);
+		if (options == '1')
 		{
-			dir_path[0] = '\0';
-			strcat(dir_path, dir_name);
-			if (dir_name[strlen(dir_name) - 1] != '/')
-			{
-				strcat(dir_path, "/");
-			}
-			strcat(dir_path, dir_list[iterator]);
-			if (stat(dir_path, &sb) != -1)
-			{
-				printf("%ld bytes ", sb.st_size);
-			}
-			printf("%s\n", dir_list[iterator]);
-		}
-		else if (options == '1')
 			if (dir_list[iterator][0] != '.')
 				printf("%s\n", dir_list[iterator]);
-			else if (options == 'a')
+		}
+		else if (options == 'a')
+		{
+			printf("%s  ", dir_list[iterator]);
+		}
+		else
+		{
+			if (dir_list[iterator][0] != '.')
 				printf("%s  ", dir_list[iterator]);
-			else if (dir_list[iterator][0] != '.')
-				printf("%s  ", dir_list[iterator]);
+		}
 		free(dir_list[iterator]);
 	}
-	if (ls_struct.directories_number > 1 || ls_struct.files_number > 0 || ls_struct.error_access_number > 0 || ls_struct.error_open_number > 0)
+	if (ls_struct.directories_number > 1
+	|| ls_struct.files_number > 0
+	|| ls_struct.error_access_number > 0
+	|| ls_struct.error_open_number > 0)
 		printf("\n");
 }
 
@@ -116,4 +112,30 @@ char **readdir_get_directories(DIR *dir, size_t *list_index)
 		*list_index = *list_index + 1;
 	}
 	return (dir_list);
+}
+
+/**
+ * flag_l - ls flag -l
+ * @dir_path: Directory path
+ * @dir_name: Directory name
+ * @dir_list: Directories list
+ * @iterator: Actual position in @dir_list
+ * Return:
+ */
+void flag_l(char *dir_path, char *dir_name, char **dir_list, size_t iterator)
+{
+	struct stat sb;
+
+	dir_path[0] = '\0';
+	strcat(dir_path, dir_name);
+	if (dir_name[strlen(dir_name) - 1] != '/')
+	{
+		strcat(dir_path, "/");
+	}
+	strcat(dir_path, dir_list[iterator]);
+	if (stat(dir_path, &sb) != -1)
+	{
+		printf("%ld bytes ", sb.st_size);
+	}
+	printf("%s\n", dir_list[iterator]);
 }

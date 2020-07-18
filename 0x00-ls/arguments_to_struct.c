@@ -1,10 +1,10 @@
 #include "header.h"
 
 /**
- * get_directories - Gets the directories list
+ * get_arguments - Gets the arguments from @argv
  * @argc: Application parameters length
  * @argv: Application parameters
- * @dir_number: Number of params
+ * @ls_struct: Struct that contains all the parameters
  * Return: Then list of directories
  */
 LS_Struct_t get_arguments(int argc, char **argv, LS_Struct_t ls_struct)
@@ -61,6 +61,14 @@ LS_Struct_t get_arguments(int argc, char **argv, LS_Struct_t ls_struct)
 	return (ls_struct);
 }
 
+/**
+ * set_list - Sets the list
+ * @argv: Application parameters
+ * @list: List to set
+ * @list_index: Current position in @list
+ * @iterator: Actual position in @argv
+ * Return: An array of strings
+ */
 char **set_list(char **argv, char **list, size_t list_index, int iterator)
 {
 	list = realloc(list,
