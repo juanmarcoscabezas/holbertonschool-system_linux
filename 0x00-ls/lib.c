@@ -9,6 +9,22 @@
  */
 int _strcmp_ci(char *s1, char *s2)
 {
+	if (strlen(s1) > 2)
+	{
+		if (*s1 == '.' && s1[1] != '.')
+		{
+			s1++;
+			s1++;
+		}
+	}
+	if (strlen(s2) > 2)
+	{
+		if (s2[0] == '.' && s2[1] != '.')
+		{
+			s2++;
+			s2++;
+		}
+	}
 	while (*s1 != '\0' && *s2 != '\0')
 	{
 		if (tolower(*s1) > tolower(*s2))
