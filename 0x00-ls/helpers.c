@@ -60,6 +60,25 @@ void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size)
 }
 
 /**
+ * _memcpy - Copies memory area
+ * Description: This function copies @n bytes from memory
+ * area @src to memory area @dest
+ * @dest: Pointer that store new memory area values
+ * @src: Pointer taht cointas memory area values
+ * @n: Bytes of memory area to copy
+ * Return: The @dest with @src memory area values
+ */
+void _memcpy(char *dest, char *src, unsigned int n)
+{
+	unsigned int i;
+
+	for (i = 0; i < n; i++)
+	{
+		*(dest + i) = *(src + i);
+	}
+}
+
+/**
  * _strdup - Creates a copy of a given string
  * Description: This function returns a pointer to a newly
  * allocated space in memory, witch contains a copy of the
@@ -95,4 +114,27 @@ char *_strdup(char *str)
 	}
 
 	return (p);
+}
+
+/**
+ * _strcat - Return concatenated string
+ * Description: This function concatenate two strings
+ * @dest: String where gonna concatenate
+ * @src: String to concatenate with @dest
+ * Return: @dest + @src
+ */
+char *_strcat(char *dest, char *src)
+{
+	int counter = 0;
+
+	while (*(dest + counter) != '\0')
+	{
+		counter++;
+	}
+	while (*src != '\0')
+	{
+		*(dest + counter) = *src++;
+		counter++;
+	}
+	return (dest);
 }

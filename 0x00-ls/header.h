@@ -6,7 +6,6 @@
 #include <sys/types.h>
 #include <dirent.h>
 #include <errno.h>
-#include <string.h>
 #include <ctype.h>
 #include <sys/stat.h>
 #include <time.h>
@@ -66,6 +65,7 @@ int _strlen(const char *);
 void *_realloc(void *, unsigned int, unsigned int);
 void _memcpy(char *, char *, unsigned int);
 char *_strdup(char *);
+char *_strcat(char *, char *);
 
 /*
  * Print_format_dir

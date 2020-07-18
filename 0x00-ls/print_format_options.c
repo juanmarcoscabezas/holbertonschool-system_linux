@@ -13,12 +13,12 @@ void flag_l(char *dir_path, char *dir_name, char **dir_list, size_t iterator)
 	struct stat sb;
 
 	dir_path[0] = '\0';
-	strcat(dir_path, dir_name);
+	_strcat(dir_path, dir_name);
 	if (dir_name[_strlen(dir_name) - 1] != '/')
 	{
-		strcat(dir_path, "/");
+		_strcat(dir_path, "/");
 	}
-	strcat(dir_path, dir_list[iterator]);
+	_strcat(dir_path, dir_list[iterator]);
 	if (stat(dir_path, &sb) != -1)
 	{
 		printf("%ld bytes ", sb.st_size);
