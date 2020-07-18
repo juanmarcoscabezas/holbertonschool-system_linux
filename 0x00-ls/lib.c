@@ -37,3 +37,34 @@ void free_struct(LS_Struct_t ls_struct)
 	if (ls_struct.error_open)
 		free(ls_struct.error_open);
 }
+
+/**
+ * add_current_directory - Adds the current directory if none is send
+ * @ls_struct: Struct that contains all the parameters
+ * Return: A list of of directories
+ */
+LS_Struct_t add_current_directory(LS_Struct_t ls_struct)
+{
+	ls_struct.directories = realloc(
+		ls_struct.directories, sizeof(char *) * (ls_struct.directories_number + 1));
+	ls_struct.directories[ls_struct.directories_number] = strdup(".");
+	ls_struct.directories_number++;
+	return (ls_struct);
+}
+
+
+/**
+ * set_list - Sets the list
+ * @argv: Application parameters
+ * @list: List to set
+ * @list_index: Current position in @list
+ * @iterator: Actual position in @argv
+ * Return: An array of strings
+ */
+char **set_list(char **argv, char **list, size_t list_index, int iterator)
+{
+	list = realloc(list,
+				   sizeof(char *) * (list_index + 1));
+	list[list_index] = strdup(argv[iterator]);
+	return (list);
+}

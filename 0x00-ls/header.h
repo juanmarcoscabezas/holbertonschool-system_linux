@@ -53,7 +53,11 @@ void print_errors_open(LS_Struct_t);
  * Arguments_to_struct
  */
 LS_Struct_t get_arguments(int, char **, LS_Struct_t);
-char **set_list(char **, char **, size_t, int);
+LS_Struct_t set_directories(char **, size_t, LS_Struct_t);
+LS_Struct_t set_files(char **, size_t, LS_Struct_t);
+LS_Struct_t set_errors_access(char **, size_t, LS_Struct_t);
+LS_Struct_t set_errors_open(char **, size_t, LS_Struct_t);
+LS_Struct_t add_current_directory(LS_Struct_t);
 
 /*
  * Print_format_dir
@@ -76,6 +80,7 @@ char **sort_directories_list_by_name(char **, size_t);
  */
 int _strcmp_ci(char *, char *);
 void free_struct(LS_Struct_t);
+char **set_list(char **, char **, size_t, int);
 
 /*
  * Options
