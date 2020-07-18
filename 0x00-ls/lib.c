@@ -65,7 +65,7 @@ LS_Struct_t add_current_directory(LS_Struct_t ls_struct)
 		ls_struct.directories,
 		sizeof(char *) * (ls_struct.directories_number),
 		sizeof(char *) * (ls_struct.directories_number + 1));
-	ls_struct.directories[ls_struct.directories_number] = strdup(".");
+	ls_struct.directories[ls_struct.directories_number] = _strdup(".");
 	ls_struct.directories_number++;
 	return (ls_struct);
 }
@@ -84,6 +84,6 @@ char **set_list(char **argv, char **list, size_t list_index, int iterator)
 	list = _realloc(list,
 	sizeof(char *) * (list_index),
 	sizeof(char *) * (list_index + 1));
-	list[list_index] = strdup(argv[iterator]);
+	list[list_index] = _strdup(argv[iterator]);
 	return (list);
 }

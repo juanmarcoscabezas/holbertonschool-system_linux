@@ -36,7 +36,7 @@ LS_Struct_t get_arguments(int argc, char **argv, LS_Struct_t ls_struct)
 				ls_struct.directories = _realloc(ls_struct.directories,
 												sizeof(char *) * (ls_struct.directories_number),
 												sizeof(char *) * (ls_struct.directories_number + 1));
-				ls_struct.directories[ls_struct.directories_number] = strdup(".");
+				ls_struct.directories[ls_struct.directories_number] = _strdup(".");
 				ls_struct.directories_number++;
 			}
 		}

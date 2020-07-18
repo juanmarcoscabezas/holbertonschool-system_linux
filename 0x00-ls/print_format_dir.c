@@ -117,7 +117,7 @@ char **readdir_get_directories(DIR *dir, size_t *list_index)
 		dir_list = _realloc(dir_list,
 		(*list_index) * sizeof(char *),
 		(*list_index + 1) * sizeof(char *));
-		dir_list[*list_index] = strdup(read->d_name);
+		dir_list[*list_index] = _strdup(read->d_name);
 		*list_index = *list_index + 1;
 	}
 	return (dir_list);
