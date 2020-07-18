@@ -78,28 +78,34 @@ void print_directories_with_parameters(
 
 	for (iterator = 0; iterator < list_index; iterator++)
 	{
-		if (options == 'l')
-			flag_l(dir_path, dir_name, dir_list, iterator);
-		if (jump == 1)
+		if (options == 'a')
+		{
+			if (options == 'l')
+				flag_l(dir_path, dir_name, dir_list, iterator);
+			if (jump == 1)
+				printf("%s\n", dir_list[iterator]);
+		}
+		else if (options == 'A')
 		{
 			if (dir_list[iterator][0] != '.')
 				printf("%s\n", dir_list[iterator]);
-		}
-		else if (options == 'a')
-		{
 			printf("%s  ", dir_list[iterator]);
 		}
 		else
 		{
 			if (dir_list[iterator][0] != '.')
-				printf("%s  ", dir_list[iterator]);
+			{
+				if (jump == 1)
+					printf("%s\n", dir_list[iterator]);
+				else
+					printf("%s  ", dir_list[iterator]);
+			}
 		}
 		free(dir_list[iterator]);
 	}
-	printf("%ld-%ld", dir_iterator, ls_struct.directories_number);
-	if (dir_iterator < ls_struct.directories_number - 1 && jump == 0)
-		printf("\n\n");
-	else
+	if (jump == 0)
+		printf("\n");
+	if ((dir_iterator < ls_struct.directories_number - 1))
 		printf("\n");
 }
 
