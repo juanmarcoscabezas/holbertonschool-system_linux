@@ -16,7 +16,7 @@ LS_Struct_t get_arguments(int argc, char **argv, LS_Struct_t ls_struct)
 	{
 		if (
 			argv[iterator][0] != '-'
-			|| (argv[iterator][0] == '-' && strlen(argv[iterator]) == 1))
+			|| (argv[iterator][0] == '-' && _strlen(argv[iterator]) == 1))
 		{
 			dir = opendir(argv[iterator]);
 			if (dir)
@@ -29,11 +29,12 @@ LS_Struct_t get_arguments(int argc, char **argv, LS_Struct_t ls_struct)
 				ls_struct = set_errors_open(argv, iterator, ls_struct);
 			closedir(dir);
 		}
-		if (strlen(argv[iterator]) == 2)
+		if (_strlen(argv[iterator]) == 2)
 		{
 			if (argv[iterator][0] == '-' && argv[iterator][1] == '-')
 			{
-				ls_struct.directories = realloc(ls_struct.directories,
+				ls_struct.directories = _realloc(ls_struct.directories,
+												sizeof(char *) * (ls_struct.directories_number),
 												sizeof(char *) * (ls_struct.directories_number + 1));
 				ls_struct.directories[ls_struct.directories_number] = strdup(".");
 				ls_struct.directories_number++;

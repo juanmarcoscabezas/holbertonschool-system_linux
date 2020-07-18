@@ -12,7 +12,7 @@ char get_options_list(int argc, char **argv)
 
 	for (argc_iterator = 1; argc_iterator < argc; argc_iterator++)
 	{
-		if (strlen(argv[argc_iterator]) == 2)
+		if (_strlen(argv[argc_iterator]) == 2)
 			if (argv[argc_iterator][0] == '-' && argv[argc_iterator][1] == '-')
 				return ('\0');
 		if (argv[argc_iterator][0] == '-')
@@ -34,11 +34,11 @@ int get_options(char *option)
 	int correct_flag = 0;
 	char *flags = "aArStR1l";
 
-	option_length = strlen(option);
+	option_length = _strlen(option);
 
 	if (option[0] == '-')
 	{
-		if (strlen(option) >= 3)
+		if (_strlen(option) >= 3)
 		{
 			if (option[1] == '-')
 				print_unrecognized_option(option, correct_flag);
@@ -47,7 +47,8 @@ int get_options(char *option)
 		{
 			if (option_iterator == 1 && option[option_iterator] == '-')
 				continue;
-			for (flags_iterator = 0; flags_iterator < strlen(flags); flags_iterator++)
+			for (flags_iterator = 0;
+			flags_iterator < (size_t) _strlen(flags); flags_iterator++)
 				if (flags[flags_iterator] == option[option_iterator])
 				{
 					correct_flag = 1;

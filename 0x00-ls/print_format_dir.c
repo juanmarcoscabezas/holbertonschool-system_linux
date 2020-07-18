@@ -114,9 +114,30 @@ char **readdir_get_directories(DIR *dir, size_t *list_index)
 
 	while ((read = readdir(dir)) != NULL)
 	{
-		dir_list = realloc(dir_list, (*list_index + 1) * sizeof(char *));
+		dir_list = _realloc(dir_list,
+		(*list_index) * sizeof(char *),
+		(*list_index + 1) * sizeof(char *));
 		dir_list[*list_index] = strdup(read->d_name);
 		*list_index = *list_index + 1;
 	}
 	return (dir_list);
+}
+
+/**
+ * _memcpy - Copies memory area
+ * Description: This function copies @n bytes from memory
+ * area @src to memory area @dest
+ * @dest: Pointer that store new memory area values
+ * @src: Pointer taht cointas memory area values
+ * @n: Bytes of memory area to copy
+ * Return: The @dest with @src memory area values
+ */
+void _memcpy(char *dest, char *src, unsigned int n)
+{
+	unsigned int i;
+
+	for (i = 0; i < n; i++)
+	{
+		*(dest + i) = *(src + i);
+	}
 }

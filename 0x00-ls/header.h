@@ -60,6 +60,14 @@ LS_Struct_t set_errors_open(char **, size_t, LS_Struct_t);
 LS_Struct_t add_current_directory(LS_Struct_t);
 
 /*
+ * Helpers
+ */
+int _strlen(const char *);
+void *_realloc(void *, unsigned int, unsigned int);
+void _memcpy(char *, char *, unsigned int);
+char *_strdup(char *);
+
+/*
  * Print_format_dir
  */
 int get_files_in_dir(char *, LS_Struct_t, size_t);

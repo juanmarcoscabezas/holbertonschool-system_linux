@@ -14,7 +14,7 @@ void flag_l(char *dir_path, char *dir_name, char **dir_list, size_t iterator)
 
 	dir_path[0] = '\0';
 	strcat(dir_path, dir_name);
-	if (dir_name[strlen(dir_name) - 1] != '/')
+	if (dir_name[_strlen(dir_name) - 1] != '/')
 	{
 		strcat(dir_path, "/");
 	}
@@ -46,9 +46,9 @@ void flag_A(
 	size_t iterator,
 	size_t jump)
 {
-	if (dir_list[iterator][0] == '.' && strlen(dir_list[iterator]) == 1)
+	if (dir_list[iterator][0] == '.' && _strlen(dir_list[iterator]) == 1)
 		return;
-	else if (strlen(dir_list[iterator]) == 2)
+	else if (_strlen(dir_list[iterator]) == 2)
 	{
 		if ((dir_list[iterator][0] == '.') && (dir_list[iterator][1] == '.'))
 			return;
