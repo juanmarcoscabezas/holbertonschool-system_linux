@@ -89,9 +89,17 @@ void print_directories_with_parameters(
 		}
 		else if (options == 'A')
 		{
-			if (dir_list[iterator][0] != '.')
+			if (dir_list[iterator][0] == '.' && strlen(dir_list[iterator]) == 1)
+				continue;
+			else if (strlen(dir_list[iterator]) == 2)
+			{
+				if ((dir_list[iterator][0] == '.') && (dir_list[iterator][1] == '.'))
+					continue;
+			}
+			if (jump == 1)
 				printf("%s\n", dir_list[iterator]);
-			printf("%s  ", dir_list[iterator]);
+			else
+				printf("%s  ", dir_list[iterator]);
 		}
 		else
 		{
