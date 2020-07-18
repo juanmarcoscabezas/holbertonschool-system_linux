@@ -4,10 +4,13 @@
  * opendir_current_in_argv - Opens an user input directory
  * @dir_name: Name of the directory
  * @ls_struct: Struct that contains all the parameters
+ * @iterator: Current position in dir array
  * Return: 0 on success, 2 otherwise
  */
 int get_files_in_dir(
-	char *dir_name, LS_Struct_t ls_struct)
+	char *dir_name,
+	LS_Struct_t ls_struct,
+	size_t iterator)
 {
 	DIR *dir;
 	size_t list_index = 0;
@@ -25,7 +28,8 @@ int get_files_in_dir(
 			dir_list,
 			dir_name, ls_struct.options,
 			list_index,
-			ls_struct);
+			ls_struct,
+			iterator);
 		free(dir_list);
 		closedir(dir);
 		return (0);
@@ -57,21 +61,26 @@ void print_dirname_at_start(char *dir_name, LS_Struct_t ls_struct)
  * @options: The user options
  * @list_index: Size of the @dir_list
  * @ls_struct: Struct that contains all the parameters
+ * @dir_iterator: Current position in dir array
  * Return:
  */
 void print_directories_with_parameters(
 	char **dir_list, char *dir_name,
 	char options, size_t list_index,
-	LS_Struct_t ls_struct)
+	LS_Struct_t ls_struct,
+	size_t dir_iterator)
 {
-	size_t iterator;
+	size_t iterator, jump = 0;
 	char dir_path[256];
+
+	if (options == 'l' || options == '1')
+		jump = 1;
 
 	for (iterator = 0; iterator < list_index; iterator++)
 	{
 		if (options == 'l')
 			flag_l(dir_path, dir_name, dir_list, iterator);
-		if (options == '1')
+		if (jump == 1)
 		{
 			if (dir_list[iterator][0] != '.')
 				printf("%s\n", dir_list[iterator]);
@@ -87,10 +96,10 @@ void print_directories_with_parameters(
 		}
 		free(dir_list[iterator]);
 	}
-	if (ls_struct.directories_number > 1
-	|| ls_struct.files_number > 0
-	|| ls_struct.error_access_number > 0
-	|| ls_struct.error_open_number > 0)
+	printf("%ld-%ld", dir_iterator, ls_struct.directories_number);
+	if (dir_iterator < ls_struct.directories_number - 1 && jump == 0)
+		printf("\n\n");
+	else
 		printf("\n");
 }
 
@@ -137,5 +146,4 @@ void flag_l(char *dir_path, char *dir_name, char **dir_list, size_t iterator)
 	{
 		printf("%ld bytes ", sb.st_size);
 	}
-	printf("%s\n", dir_list[iterator]);
 }

@@ -62,10 +62,10 @@ LS_Struct_t add_current_directory(LS_Struct_t);
 /*
  * Print_format_dir
  */
-int get_files_in_dir(char *, LS_Struct_t);
+int get_files_in_dir(char *, LS_Struct_t, size_t);
 void print_directories_with_parameters(
 	char **,
-	char *, char, size_t, LS_Struct_t);
+	char *, char, size_t, LS_Struct_t, size_t);
 char **readdir_get_directories(DIR *, size_t *);
 void print_dirname_at_start(char *, LS_Struct_t);
 void flag_l(char *, char *, char **, size_t);

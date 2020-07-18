@@ -16,7 +16,8 @@ void print_directories(LS_Struct_t ls_struct)
 	{
 		get_files_in_dir(
 			ls_struct.directories[iterator],
-			ls_struct);
+			ls_struct,
+			iterator);
 		free(ls_struct.directories[iterator]);
 	}
 }
@@ -91,7 +92,7 @@ void print_errors_open(LS_Struct_t ls_struct)
 		iterator++)
 	{
 		fprintf(stderr,
-		"hls: cannot open %s: Permission denied\n",
+		"hls: cannot open directory %s: Permission denied\n",
 		ls_struct.error_open[iterator]);
 		free(ls_struct.error_open[iterator]);
 	}
