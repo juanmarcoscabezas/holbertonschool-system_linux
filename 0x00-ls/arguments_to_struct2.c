@@ -18,17 +18,19 @@ LS_Struct_t get_arguments_helper(
 	dir = opendir(argv[iterator]);
 	if (dir)
 	{
-		ls_struct = set_directories(argv, iterator, ls_struct);
 		closedir(dir);
-		return (ls_struct);
+		return (set_directories(argv, iterator, ls_struct));
 	}
 	else if (lstat(argv[iterator], &sb) == 0
-	&& !S_ISDIR(sb.st_mode))
+	&& S_ISREG(sb.st_mode))
+	{
+		closedir(dir);
 		return (set_files(argv, iterator, ls_struct));
-	else if (lstat(argv[iterator], &sb) == -1 && !(sb.st_mode & S_IRUSR))
-		ls_struct = set_errors_access(argv, iterator, ls_struct);
-	else
+	}
+	else if (lstat(argv[iterator], &sb) == 0)
 		ls_struct = set_errors_open(argv, iterator, ls_struct);
+	else
+		ls_struct = set_errors_access(argv, iterator, ls_struct);
 	ls_struct.error_value = 2;
 	closedir(dir);
 	return (ls_struct);
