@@ -21,9 +21,10 @@ LS_Struct_t get_arguments_helper(
 		closedir(dir);
 		return (set_directories(argv, iterator, ls_struct));
 	}
-	else if (lstat(argv[iterator], &sb) == 0
-	&&
-	(S_ISREG(sb.st_mode) || S_ISLNK(sb.st_mode)))
+	else if (lstat(argv[iterator], &sb) == 0 &&
+	(S_ISREG(sb.st_mode) || S_ISLNK(sb.st_mode)
+	|| S_ISCHR(sb.st_mode) || S_ISBLK(sb.st_mode)
+	|| S_ISFIFO(sb.st_mode) || S_ISSOCK(sb.st_mode)))
 	{
 		closedir(dir);
 		return (set_files(argv, iterator, ls_struct));
