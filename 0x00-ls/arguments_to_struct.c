@@ -23,11 +23,11 @@ LS_Struct_t get_arguments(int argc, char **argv, LS_Struct_t ls_struct)
 				ls_struct = set_directories(argv, iterator, ls_struct);
 			else
 				ls_struct.error_value = 2;
-			if (errno == 20)
+			if (errno == ENOTDIR)
 				ls_struct = set_files(argv, iterator, ls_struct);
-			if (errno == 2)
+			else if (errno == ENOENT)
 				ls_struct = set_errors_access(argv, iterator, ls_struct);
-			if (errno == 13)
+			else if (errno == EACCES)
 				ls_struct = set_errors_open(argv, iterator, ls_struct);
 			closedir(dir);
 		}
