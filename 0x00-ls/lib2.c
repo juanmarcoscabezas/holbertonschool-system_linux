@@ -42,8 +42,8 @@ void print_perm(
 		_memset(permissions, '-', 11);
 		if (is_dir == 0)
 			permissions[0] = ((perm & S_IFMT) == S_IFDIR) ? 'd' : '-';
-		else
-			permissions[0] = '-';
+		if (S_ISLNK(perm))
+			permissions[0] = 'l';
 		permissions[1] = (perm & S_IRUSR) ? 'r' : '-';
 		permissions[2] = (perm & S_IWUSR) ? 'w' : '-';
 		permissions[3] = (perm & S_IXUSR) ? 'x' : '-';
