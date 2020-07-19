@@ -9,7 +9,6 @@
  */
 LS_Struct_t get_arguments(int argc, char **argv, LS_Struct_t ls_struct)
 {
-	DIR *dir;
 	int iterator;
 
 	for (iterator = 1; iterator < argc; iterator++)
@@ -17,20 +16,7 @@ LS_Struct_t get_arguments(int argc, char **argv, LS_Struct_t ls_struct)
 		if (
 			argv[iterator][0] != '-'
 			|| (argv[iterator][0] == '-' && _strlen(argv[iterator]) == 1))
-		{
-			dir = opendir(argv[iterator]);
-			if (dir)
-				ls_struct = set_directories(argv, iterator, ls_struct);
-			else
-				ls_struct.error_value = 2;
-			if (errno == ENOTDIR)
-				ls_struct = set_files(argv, iterator, ls_struct);
-			else if (errno == ENOENT)
-				ls_struct = set_errors_access(argv, iterator, ls_struct);
-			else if (errno == EACCES)
-				ls_struct = set_errors_open(argv, iterator, ls_struct);
-			closedir(dir);
-		}
+			ls_struct = get_arguments_helper(argv, iterator, ls_struct);
 		if (_strlen(argv[iterator]) == 2)
 		{
 			if (argv[iterator][0] == '-' && argv[iterator][1] == '-')

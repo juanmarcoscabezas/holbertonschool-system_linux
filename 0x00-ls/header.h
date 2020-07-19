@@ -6,7 +6,6 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <dirent.h>
-#include <errno.h>
 #include <ctype.h>
 
 /**
@@ -57,6 +56,7 @@ LS_Struct_t set_directories(char **, size_t, LS_Struct_t);
 LS_Struct_t set_files(char **, size_t, LS_Struct_t);
 LS_Struct_t set_errors_access(char **, size_t, LS_Struct_t);
 LS_Struct_t set_errors_open(char **, size_t, LS_Struct_t);
+LS_Struct_t get_arguments_helper(char **, size_t, LS_Struct_t);
 
 /*
  * Helpers

@@ -95,7 +95,7 @@ void print_directories_with_parameters(
 		}
 		free(dir_list[iterator]);
 	}
-	if (jump == 0 && options == 'a')
+	if (jump == 0)
 		printf("\n");
 	if ((dir_iterator < ls_struct.directories_number - 1))
 		printf("\n");
