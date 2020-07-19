@@ -19,7 +19,7 @@ LS_Struct_t get_arguments_helper(
 	if (dir)
 		ls_struct = set_directories(argv, iterator, ls_struct);
 	else if (lstat(argv[iterator], &sb) == 0
-	&& S_ISREG(sb.st_mode) && !S_ISDIR(sb.st_mode))
+	&& !S_ISDIR(sb.st_mode))
 		ls_struct = set_files(argv, iterator, ls_struct);
 	else if (lstat(argv[iterator], &sb) == -1 && !(sb.st_mode & S_IRUSR))
 		ls_struct = set_errors_access(argv, iterator, ls_struct);
