@@ -9,6 +9,21 @@
 #include <ctype.h>
 
 /**
+ * struct Flag - Store the flags status
+ * @flag_one: Flag -1
+ * @flag_a: FLag -a
+ * @flag_a_u: Flag -A
+ * @flag_l: Flag -l
+ */
+typedef struct Flag
+{
+	int flag_one;
+	int flag_a;
+	int flag_a_u;
+	int flag_l;
+} Flag_t;
+
+/**
  * struct LS_Struct - Ls command struct
  * @directories: List of directories in argv
  * @files: List of files in argv
@@ -27,7 +42,7 @@ typedef struct LS_Struct
 	char **files;
 	char **error_access;
 	char **error_open;
-	char options;
+	Flag_t options;
 	size_t directories_number;
 	size_t files_number;
 	size_t error_access_number;
@@ -39,6 +54,8 @@ typedef struct LS_Struct
  * Main
  */
 int execute(int, char **);
+LS_Struct_t initialize_ls(LS_Struct_t);
+Flag_t initialize_flags(Flag_t flags);
 
 /*
  * Print
@@ -73,7 +90,7 @@ char *_strcat(char *, char *);
 int get_files_in_dir(char *, LS_Struct_t, size_t);
 void print_directories_with_parameters(
 	char **,
-	char *, char, size_t, LS_Struct_t, size_t);
+	char *, size_t, LS_Struct_t, size_t);
 char **readdir_get_directories(DIR *, size_t *);
 void print_dirname_at_start(char *, LS_Struct_t);
 int _strcmp(char *, char *);
@@ -83,7 +100,7 @@ int _strcmp(char *, char *);
  */
 void flag_l(char *, char *, char **, size_t);
 void flag_a(char **, char *, char *, size_t,
-	char,
+	LS_Struct_t,
 	size_t);
 void flag_A(
 	char **,
@@ -107,9 +124,10 @@ char __tolower(char);
 /*
  * Options
  */
-char get_options_list(int, char **);
-int get_options(char *);
+Flag_t get_options_list(int, char **, Flag_t);
+Flag_t get_options(char *, Flag_t);
 void print_invalid_option(char *, int, int);
 void print_unrecognized_option(char *, int);
+Flag_t set_flags(Flag_t, char);
 
 #endif

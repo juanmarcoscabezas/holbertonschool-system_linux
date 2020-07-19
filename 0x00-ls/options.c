@@ -4,29 +4,36 @@
  * get_options_list - Gets an options list
  * @argc: Application parameters length
  * @argv: Application parameters
+ * @flags: Flag struct
  * Return: The options list
  */
-char get_options_list(int argc, char **argv)
+Flag_t get_options_list(int argc, char **argv, Flag_t flags)
 {
 	int argc_iterator;
 
 	for (argc_iterator = 1; argc_iterator < argc; argc_iterator++)
 	{
+		if (_strcmp("--all", argv[argc_iterator]) == 0)
+		{
+			flags.flag_a = 1;
+			continue;
+		}
 		if (_strlen(argv[argc_iterator]) == 2)
 			if (argv[argc_iterator][0] == '-' && argv[argc_iterator][1] == '-')
-				return ('\0');
+				continue;
 		if (argv[argc_iterator][0] == '-')
-			return (get_options(argv[argc_iterator]));
+			flags = get_options(argv[argc_iterator], flags);
 	}
-	return ('\0');
+	return (flags);
 }
 
 /**
  * get_options - Gets and option
  * @option: Option to get in the user input
+ * @flag_struct: Flag struct
  * Return: An option;
  */
-int get_options(char *option)
+Flag_t get_options(char *option, Flag_t flag_struct)
 {
 	int option_iterator;
 	size_t flags_iterator;
@@ -52,13 +59,13 @@ int get_options(char *option)
 				if (flags[flags_iterator] == option[option_iterator])
 				{
 					correct_flag = 1;
-					return (flags[flags_iterator]);
+					flag_struct = set_flags(flag_struct, flags[flags_iterator]);
 				}
 			print_invalid_option(option, correct_flag, option_iterator);
 			correct_flag = 0;
 		}
 	}
-	return (0);
+	return (flag_struct);
 }
 
 /**
@@ -94,4 +101,23 @@ void print_invalid_option(char *option, int correct_flag, int option_iterator)
 		option[option_iterator]);
 		exit(2);
 	}
+}
+
+/**
+ * set_flags - Set the flags
+ * @flags: flags struct
+ * @option: Option to set in @flags
+ * Return: Flag_t struct
+ */
+Flag_t set_flags(Flag_t flags, char option)
+{
+	if (option == '1')
+		flags.flag_one = 1;
+	if (option == 'a')
+		flags.flag_a = 1;
+	if (option == 'A')
+		flags.flag_a_u = 1;
+	if (option == 'l')
+		flags.flag_l = 1;
+	return (flags);
 }

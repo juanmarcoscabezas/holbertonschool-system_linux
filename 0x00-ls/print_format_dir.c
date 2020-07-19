@@ -26,7 +26,7 @@ int get_files_in_dir(
 		sort_directories_list_by_name(dir_list, list_index);
 		print_directories_with_parameters(
 			dir_list,
-			dir_name, ls_struct.options,
+			dir_name,
 			list_index,
 			ls_struct,
 			iterator);
@@ -58,7 +58,6 @@ void print_dirname_at_start(char *dir_name, LS_Struct_t ls_struct)
  * with the parameters
  * @dir_list: Files/directories inside the current directory
  * @dir_name: Current directory name
- * @options: The user options
  * @list_index: Size of the @dir_list
  * @ls_struct: Struct that contains all the parameters
  * @dir_iterator: Current position in dir array
@@ -66,22 +65,22 @@ void print_dirname_at_start(char *dir_name, LS_Struct_t ls_struct)
  */
 void print_directories_with_parameters(
 	char **dir_list, char *dir_name,
-	char options, size_t list_index,
+	size_t list_index,
 	LS_Struct_t ls_struct,
 	size_t dir_iterator)
 {
 	size_t iterator, jump = 0;
 	char dir_path[256];
 
-	if (options == 'l' || options == '1')
+	if (ls_struct.options.flag_l == 1 || ls_struct.options.flag_one == 1)
 		jump = 1;
 
 	for (iterator = 0; iterator < list_index; iterator++)
 	{
-		if (options == 'a')
+		if (ls_struct.options.flag_a == 1)
 			flag_a(dir_list, dir_path, dir_name,
-				iterator, options, jump);
-		else if (options == 'A')
+				iterator, ls_struct, jump);
+		else if (ls_struct.options.flag_a_u == 'A')
 			flag_A(dir_list, iterator, jump);
 		else
 		{

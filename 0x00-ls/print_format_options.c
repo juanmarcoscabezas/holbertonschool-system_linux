@@ -30,10 +30,10 @@ void flag_a(
 	char *dir_path,
 	char *dir_name,
 	size_t iterator,
-	char options,
+	LS_Struct_t ls_struct,
 	size_t jump)
 {
-	if (options == 'l')
+	if (ls_struct.options.flag_l == 1)
 		flag_l(dir_path, dir_name, dir_list, iterator);
 	if (jump == 1)
 		printf("%s\n", dir_list[iterator]);

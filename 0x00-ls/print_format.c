@@ -32,7 +32,7 @@ void print_files(LS_Struct_t ls_struct)
 	size_t iterator;
 	size_t jump = 0;
 
-	if (ls_struct.options == '1' || ls_struct.options == 'l')
+	if (ls_struct.options.flag_one == 1 || ls_struct.options.flag_l == 1)
 		jump = 1;
 
 	for (
