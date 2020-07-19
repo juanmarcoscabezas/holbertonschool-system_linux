@@ -4,10 +4,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <sys/types.h>
+#include <sys/stat.h>
 #include <dirent.h>
 #include <errno.h>
 #include <ctype.h>
-#include <sys/stat.h>
 
 /**
  * struct LS_Struct - Ls command struct
