@@ -71,7 +71,7 @@ void print_errors_access(LS_Struct_t ls_struct)
 		iterator++)
 	{
 		fprintf(stderr,
-		"hls: cannot access %s: No such file or directory\n",
+		"ls: cannot access %s: No such file or directory\n",
 		ls_struct.error_access[iterator]);
 		free(ls_struct.error_access[iterator]);
 	}
@@ -92,7 +92,7 @@ void print_errors_open(LS_Struct_t ls_struct)
 		iterator++)
 	{
 		fprintf(stderr,
-		"hls: cannot open directory %s: Permission denied\n",
+		"ls: cannot open directory %s: Permission denied\n",
 		ls_struct.error_open[iterator]);
 		free(ls_struct.error_open[iterator]);
 	}
