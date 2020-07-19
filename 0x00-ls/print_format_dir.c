@@ -80,7 +80,7 @@ void print_directories_with_parameters(
 			flag_l(dir_name, dir_list, iterator);
 		if (ls_struct.options.flag_a == 1)
 			flag_a(dir_list, iterator, jump);
-		else if (ls_struct.options.flag_a_u == 'A')
+		else if (ls_struct.options.flag_a_u == 1)
 			flag_A(dir_list, iterator, jump);
 		else
 		{

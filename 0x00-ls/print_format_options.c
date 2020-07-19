@@ -41,11 +41,11 @@ void flag_A(
 	size_t iterator,
 	size_t jump)
 {
-	if (dir_list[iterator][0] == '.' && _strlen(dir_list[iterator]) == 1)
-		return;
-	else if (_strlen(dir_list[iterator]) == 2)
+	// printf("Entra con: %s\n", dir_list[iterator]);
+	if (_strlen(dir_list[iterator]) <= 2)
 	{
-		if ((dir_list[iterator][0] == '.') && (dir_list[iterator][1] == '.'))
+		if (_strcmp(".", dir_list[iterator]) == 0
+		|| _strcmp("..", dir_list[iterator]) == 0)
 			return;
 	}
 	if (jump == 1)
