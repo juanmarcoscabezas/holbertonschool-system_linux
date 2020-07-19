@@ -76,6 +76,7 @@ void print_directories_with_parameters(
 	char *, char, size_t, LS_Struct_t, size_t);
 char **readdir_get_directories(DIR *, size_t *);
 void print_dirname_at_start(char *, LS_Struct_t);
+int _strcmp(char *, char *);
 
 /*
  * Print_format_options

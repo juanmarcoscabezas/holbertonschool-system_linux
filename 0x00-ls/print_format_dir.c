@@ -95,7 +95,7 @@ void print_directories_with_parameters(
 		}
 		free(dir_list[iterator]);
 	}
-	if (jump == 0)
+	if (jump == 0 && options == 'a')
 		printf("\n");
 	if ((dir_iterator < ls_struct.directories_number - 1))
 		printf("\n");
@@ -121,4 +121,41 @@ char **readdir_get_directories(DIR *dir, size_t *list_index)
 		*list_index = *list_index + 1;
 	}
 	return (dir_list);
+}
+
+/**
+ * _strcmp - Compare strings
+ * Description: This function compare two strings
+ * @s1: First string to compare
+ * @s2: Second string to compare
+ * Return: @n bytes of @src
+ */
+int _strcmp(char *s1, char *s2)
+{
+	if (_strlen(s1) > 2)
+	{
+		if (*s1 == '.' && s1[1] != '.')
+		{
+			s1++;
+			s1++;
+		}
+	}
+	if (_strlen(s2) > 2)
+	{
+		if (s2[0] == '.' && s2[1] != '.')
+		{
+			s2++;
+			s2++;
+		}
+	}
+	while (*s1 != '\0' && *s2 != '\0')
+	{
+		if (*s1 > *s2)
+			return (*s1 - *s2);
+		else if (*s2 > *s1)
+			return ((*s2 - *s1) * -1);
+		s1++;
+		s2++;
+	}
+	return (0);
 }
