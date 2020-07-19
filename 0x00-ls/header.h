@@ -6,7 +6,6 @@
 #include <sys/types.h>
 #include <dirent.h>
 #include <errno.h>
-#include <string.h>
 #include <ctype.h>
 #include <sys/stat.h>
 #include <time.h>
@@ -60,6 +59,15 @@ LS_Struct_t set_errors_open(char **, size_t, LS_Struct_t);
 LS_Struct_t add_current_directory(LS_Struct_t);
 
 /*
+ * Helpers
+ */
+int _strlen(const char *);
+void *_realloc(void *, unsigned int, unsigned int);
+void _memcpy(char *, char *, unsigned int);
+char *_strdup(char *);
+char *_strcat(char *, char *);
+
+/*
  * Print_format_dir
  */
 int get_files_in_dir(char *, LS_Struct_t, size_t);
@@ -68,7 +76,18 @@ void print_directories_with_parameters(
 	char *, char, size_t, LS_Struct_t, size_t);
 char **readdir_get_directories(DIR *, size_t *);
 void print_dirname_at_start(char *, LS_Struct_t);
+
+/*
+ * Print_format_options
+ */
 void flag_l(char *, char *, char **, size_t);
+void flag_a(char **, char *, char *, size_t,
+	char,
+	size_t);
+void flag_A(
+	char **,
+	size_t,
+	size_t);
 
 /*
  * Sort

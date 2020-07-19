@@ -9,7 +9,7 @@
  */
 int _strcmp_ci(char *s1, char *s2)
 {
-	if (strlen(s1) > 2)
+	if (_strlen(s1) > 2)
 	{
 		if (*s1 == '.' && s1[1] != '.')
 		{
@@ -17,7 +17,7 @@ int _strcmp_ci(char *s1, char *s2)
 			s1++;
 		}
 	}
-	if (strlen(s2) > 2)
+	if (_strlen(s2) > 2)
 	{
 		if (s2[0] == '.' && s2[1] != '.')
 		{
@@ -61,9 +61,11 @@ void free_struct(LS_Struct_t ls_struct)
  */
 LS_Struct_t add_current_directory(LS_Struct_t ls_struct)
 {
-	ls_struct.directories = realloc(
-		ls_struct.directories, sizeof(char *) * (ls_struct.directories_number + 1));
-	ls_struct.directories[ls_struct.directories_number] = strdup(".");
+	ls_struct.directories = _realloc(
+		ls_struct.directories,
+		sizeof(char *) * (ls_struct.directories_number),
+		sizeof(char *) * (ls_struct.directories_number + 1));
+	ls_struct.directories[ls_struct.directories_number] = _strdup(".");
 	ls_struct.directories_number++;
 	return (ls_struct);
 }
@@ -79,8 +81,9 @@ LS_Struct_t add_current_directory(LS_Struct_t ls_struct)
  */
 char **set_list(char **argv, char **list, size_t list_index, int iterator)
 {
-	list = realloc(list,
-				   sizeof(char *) * (list_index + 1));
-	list[list_index] = strdup(argv[iterator]);
+	list = _realloc(list,
+	sizeof(char *) * (list_index),
+	sizeof(char *) * (list_index + 1));
+	list[list_index] = _strdup(argv[iterator]);
 	return (list);
 }
