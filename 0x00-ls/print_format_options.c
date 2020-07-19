@@ -19,7 +19,7 @@ void flag_l(char *dir_path, char *dir_name, char **dir_list, size_t iterator)
 		_strcat(dir_path, "/");
 	}
 	_strcat(dir_path, dir_list[iterator]);
-	if (stat(dir_path, &sb) != -1)
+	if (lstat(dir_path, &sb) != -1)
 	{
 		printf("%ld bytes ", sb.st_size);
 	}
