@@ -43,10 +43,8 @@ LS_Struct_t get_arguments(int argc, char **argv, LS_Struct_t ls_struct)
 			}
 		}
 	}
-	if (ls_struct.directories_number == 0
-	&& ls_struct.files_number == 0
-	&& ls_struct.error_access_number == 0
-	&& ls_struct.error_open_number == 0)
+	if (ls_struct.directories_number == 0 && ls_struct.files_number == 0
+	&& ls_struct.error_access_number == 0 && ls_struct.error_open_number == 0)
 	{
 		ls_struct = add_current_directory(ls_struct);
 	}

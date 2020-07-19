@@ -27,10 +27,10 @@ int _strcmp_ci(char *s1, char *s2)
 	}
 	while (*s1 != '\0' && *s2 != '\0')
 	{
-		if (tolower(*s1) > tolower(*s2))
-			return (tolower(*s1) - tolower(*s2));
-		else if (tolower(*s2) > tolower(*s1))
-			return ((tolower(*s2) - tolower(*s1)) * -1);
+		if (__tolower(*s1) > __tolower(*s2))
+			return (__tolower(*s1) - __tolower(*s2));
+		else if (__tolower(*s2) > __tolower(*s1))
+			return ((__tolower(*s2) - __tolower(*s1)) * -1);
 		s1++;
 		s2++;
 	}
@@ -86,4 +86,16 @@ char **set_list(char **argv, char **list, size_t list_index, int iterator)
 	sizeof(char *) * (list_index + 1));
 	list[list_index] = _strdup(argv[iterator]);
 	return (list);
+}
+
+/**
+ * __tolower - Returns the lowercase
+ * @c: Char to convert
+ * Return: @c in lowercase
+ */
+char __tolower(char c)
+{
+	if (c >= 65 && c <= 90)
+		return (c + 32);
+	return (c);
 }

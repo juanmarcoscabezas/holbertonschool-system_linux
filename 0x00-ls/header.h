@@ -8,7 +8,6 @@
 #include <errno.h>
 #include <ctype.h>
 #include <sys/stat.h>
-#include <time.h>
 
 /**
  * struct LS_Struct - Ls command struct
@@ -21,6 +20,7 @@
  * @files_number: Number of files in @files
  * @error_access_number: Number of access errors
  * @error_open_number: Number of open errors
+ * @error_value: Error value on return
  */
 typedef struct LS_Struct
 {
@@ -57,7 +57,6 @@ LS_Struct_t set_directories(char **, size_t, LS_Struct_t);
 LS_Struct_t set_files(char **, size_t, LS_Struct_t);
 LS_Struct_t set_errors_access(char **, size_t, LS_Struct_t);
 LS_Struct_t set_errors_open(char **, size_t, LS_Struct_t);
-LS_Struct_t add_current_directory(LS_Struct_t);
 
 /*
  * Helpers
@@ -101,6 +100,8 @@ char **sort_directories_list_by_name(char **, size_t);
 int _strcmp_ci(char *, char *);
 void free_struct(LS_Struct_t);
 char **set_list(char **, char **, size_t, int);
+LS_Struct_t add_current_directory(LS_Struct_t);
+char __tolower(char);
 
 /*
  * Options
