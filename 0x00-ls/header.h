@@ -7,6 +7,9 @@
 #include <sys/stat.h>
 #include <dirent.h>
 #include <ctype.h>
+#include <pwd.h>
+#include <grp.h>
+#include <time.h>
 
 /**
  * struct Flag - Store the flags status
@@ -99,7 +102,7 @@ int _strcmp(char *, char *);
 /*
  * Print_format_options
  */
-void flag_l(char *, char **, size_t);
+void flag_l(char *, char **, size_t, LS_Struct_t);
 void flag_a(char **, size_t, size_t);
 void flag_A(
 	char **,
@@ -119,6 +122,7 @@ void free_struct(LS_Struct_t);
 char **set_list(char **, char **, size_t, int);
 LS_Struct_t add_current_directory(LS_Struct_t);
 char __tolower(char);
+void print_perm(char *, int);
 
 /*
  * Options

@@ -40,6 +40,7 @@ void print_files(LS_Struct_t ls_struct)
 		iterator < ls_struct.files_number;
 		iterator++)
 	{
+		print_perm(ls_struct.files[iterator], 0);
 		printf("%s", ls_struct.files[iterator]);
 		if (jump == 1)
 			printf("\n");

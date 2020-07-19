@@ -5,13 +5,20 @@
  * @dir_name: Directory name
  * @dir_list: Directories list
  * @iterator: Actual position in @dir_list
+ * @ls_struct: Ls struct
  * Return:
  */
-void flag_l(char *dir_name, char **dir_list, size_t iterator)
-{
-	struct stat sb;
+void flag_l(
+	char *dir_name,
+	char **dir_list,
+	size_t iterator,
+	LS_Struct_t ls_struct){
 	char dir_path[256];
 
+	if (ls_struct.options.flag_a != 1
+	&& (_strcmp(".", dir_list[iterator]) == 0
+	|| _strcmp("..", dir_list[iterator]) == 0))
+		return;
 	_memset(dir_path, '\0', 256);
 	_strcat(dir_path, dir_name);
 	if (dir_name[_strlen(dir_name) - 1] != '/')
@@ -19,10 +26,7 @@ void flag_l(char *dir_name, char **dir_list, size_t iterator)
 		_strcat(dir_path, "/");
 	}
 	_strcat(dir_path, dir_list[iterator]);
-	if (lstat(dir_path, &sb) != -1)
-	{
-		printf("%ld bytes ", sb.st_size);
-	}
+	print_perm(dir_path, 0);
 }
 
 void flag_a(
