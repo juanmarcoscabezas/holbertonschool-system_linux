@@ -19,7 +19,6 @@ int main(int argc, char **argv)
  */
 int execute(int argc, char **argv)
 {
-	int execution_return = 0;
 	LS_Struct_t ls_struct;
 
 	ls_struct.directories = NULL;
@@ -31,6 +30,7 @@ int execute(int argc, char **argv)
 	ls_struct.error_access_number = 0;
 	ls_struct.error_open_number = 0;
 	ls_struct.options = '\0';
+	ls_struct.error_value = 0;
 
 	ls_struct.options = get_options_list(argc, argv);
 	ls_struct = get_arguments(argc, argv, ls_struct);
@@ -40,5 +40,5 @@ int execute(int argc, char **argv)
 	print_directories(ls_struct);
 	print_errors_open(ls_struct);
 	free_struct(ls_struct);
-	return (execution_return);
+	return (ls_struct.error_value);
 }

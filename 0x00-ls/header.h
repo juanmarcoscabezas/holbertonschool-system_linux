@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <sys/types.h>
 #include <dirent.h>
+#include <errno.h>
 #include <ctype.h>
 #include <sys/stat.h>
 #include <time.h>
@@ -32,6 +33,7 @@ typedef struct LS_Struct
 	size_t files_number;
 	size_t error_access_number;
 	size_t error_open_number;
+	size_t error_value;
 } LS_Struct_t;
 
 /*

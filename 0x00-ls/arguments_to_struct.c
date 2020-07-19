@@ -9,8 +9,8 @@
  */
 LS_Struct_t get_arguments(int argc, char **argv, LS_Struct_t ls_struct)
 {
+	DIR *dir;
 	int iterator;
-	struct stat sb;
 
 	for (iterator = 1; iterator < argc; iterator++)
 	{
@@ -18,32 +18,35 @@ LS_Struct_t get_arguments(int argc, char **argv, LS_Struct_t ls_struct)
 			argv[iterator][0] != '-'
 			|| (argv[iterator][0] == '-' && _strlen(argv[iterator]) == 1))
 		{
-			if (lstat(argv[iterator], &sb) == 0)
-			{
-				if (S_ISDIR(sb.st_mode) && !S_ISREG(sb.st_mode))
-					ls_struct = set_directories(argv, iterator, ls_struct);
-				else if (S_ISREG(sb.st_mode))
-					ls_struct = set_files(argv, iterator, ls_struct);
-				if (!(sb.st_mode & S_IRUSR))
-					ls_struct = set_errors_access(argv, iterator, ls_struct);
-			}
+			dir = opendir(argv[iterator]);
+			if (dir)
+				ls_struct = set_directories(argv, iterator, ls_struct);
 			else
+				ls_struct.error_value = 2;
+			if (errno == 20)
+				ls_struct = set_files(argv, iterator, ls_struct);
+			if (errno == 2)
 				ls_struct = set_errors_access(argv, iterator, ls_struct);
+			if (errno == 13)
+				ls_struct = set_errors_open(argv, iterator, ls_struct);
+			closedir(dir);
 		}
 		if (_strlen(argv[iterator]) == 2)
 		{
 			if (argv[iterator][0] == '-' && argv[iterator][1] == '-')
 			{
 				ls_struct.directories = _realloc(ls_struct.directories,
-					sizeof(char *) * (ls_struct.directories_number),
-					sizeof(char *) * (ls_struct.directories_number + 1));
+												sizeof(char *) * (ls_struct.directories_number),
+												sizeof(char *) * (ls_struct.directories_number + 1));
 				ls_struct.directories[ls_struct.directories_number] = _strdup(".");
 				ls_struct.directories_number++;
 			}
 		}
 	}
-	if (ls_struct.directories_number == 0 && ls_struct.files_number == 0
-	&& ls_struct.error_access_number == 0 && ls_struct.error_open_number == 0)
+	if (ls_struct.directories_number == 0
+	&& ls_struct.files_number == 0
+	&& ls_struct.error_access_number == 0
+	&& ls_struct.error_open_number == 0)
 	{
 		ls_struct = add_current_directory(ls_struct);
 	}
