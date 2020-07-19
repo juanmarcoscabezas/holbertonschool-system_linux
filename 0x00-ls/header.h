@@ -128,5 +128,6 @@ Flag_t get_options(char *, Flag_t);
 void print_invalid_option(char *, int, int);
 void print_unrecognized_option(char *, int);
 Flag_t set_flags(Flag_t, char);
+void print_ambi_option(char *option);
 
 #endif
