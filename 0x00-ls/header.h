@@ -74,6 +74,7 @@ LS_Struct_t set_files(char **, size_t, LS_Struct_t);
 LS_Struct_t set_errors_access(char **, size_t, LS_Struct_t);
 LS_Struct_t set_errors_open(char **, size_t, LS_Struct_t);
 LS_Struct_t get_arguments_helper(char **, size_t, LS_Struct_t);
+char *_memset(char *, char, unsigned int);
 
 /*
  * Helpers
@@ -98,10 +99,8 @@ int _strcmp(char *, char *);
 /*
  * Print_format_options
  */
-void flag_l(char *, char *, char **, size_t);
-void flag_a(char **, char *, char *, size_t,
-	LS_Struct_t,
-	size_t);
+void flag_l(char *, char **, size_t);
+void flag_a(char **, size_t, size_t);
 void flag_A(
 	char **,
 	size_t,

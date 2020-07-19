@@ -2,17 +2,17 @@
 
 /**
  * flag_l - ls flag -l
- * @dir_path: Directory path
  * @dir_name: Directory name
  * @dir_list: Directories list
  * @iterator: Actual position in @dir_list
  * Return:
  */
-void flag_l(char *dir_path, char *dir_name, char **dir_list, size_t iterator)
+void flag_l(char *dir_name, char **dir_list, size_t iterator)
 {
 	struct stat sb;
+	char dir_path[256];
 
-	dir_path[0] = '\0';
+	_memset(dir_path, '\0', 256);
 	_strcat(dir_path, dir_name);
 	if (dir_name[_strlen(dir_name) - 1] != '/')
 	{
@@ -27,14 +27,9 @@ void flag_l(char *dir_path, char *dir_name, char **dir_list, size_t iterator)
 
 void flag_a(
 	char **dir_list,
-	char *dir_path,
-	char *dir_name,
 	size_t iterator,
-	LS_Struct_t ls_struct,
 	size_t jump)
 {
-	if (ls_struct.options.flag_l == 1)
-		flag_l(dir_path, dir_name, dir_list, iterator);
 	if (jump == 1)
 		printf("%s\n", dir_list[iterator]);
 	else

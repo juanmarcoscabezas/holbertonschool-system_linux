@@ -70,16 +70,16 @@ void print_directories_with_parameters(
 	size_t dir_iterator)
 {
 	size_t iterator, jump = 0;
-	char dir_path[256];
 
 	if (ls_struct.options.flag_l == 1 || ls_struct.options.flag_one == 1)
 		jump = 1;
 
 	for (iterator = 0; iterator < list_index; iterator++)
 	{
+		if (ls_struct.options.flag_l == 1)
+			flag_l(dir_name, dir_list, iterator);
 		if (ls_struct.options.flag_a == 1)
-			flag_a(dir_list, dir_path, dir_name,
-				iterator, ls_struct, jump);
+			flag_a(dir_list, iterator, jump);
 		else if (ls_struct.options.flag_a_u == 'A')
 			flag_A(dir_list, iterator, jump);
 		else

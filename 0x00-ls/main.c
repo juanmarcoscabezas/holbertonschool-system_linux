@@ -20,10 +20,9 @@ int main(int argc, char **argv)
 int execute(int argc, char **argv)
 {
 	LS_Struct_t ls_struct;
-	Flag_t flags;
 
 	ls_struct = initialize_ls(ls_struct);
-	ls_struct.options = get_options_list(argc, argv, flags);
+	ls_struct.options = get_options_list(argc, argv, ls_struct.options);
 	ls_struct = get_arguments(argc, argv, ls_struct);
 
 	print_errors_access(ls_struct);
@@ -61,9 +60,9 @@ LS_Struct_t initialize_ls(LS_Struct_t ls_struct)
  */
 Flag_t initialize_flags(Flag_t flags)
 {
-	flags.flag_one = 1;
-	flags.flag_a = 1;
-	flags.flag_a_u = 1;
-	flags.flag_l = 1;
+	flags.flag_one = 0;
+	flags.flag_a = 0;
+	flags.flag_a_u = 0;
+	flags.flag_l = 0;
 	return (flags);
 }
