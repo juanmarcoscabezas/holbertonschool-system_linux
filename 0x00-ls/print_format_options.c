@@ -41,7 +41,6 @@ void flag_A(
 	size_t iterator,
 	size_t jump)
 {
-	// printf("Entra con: %s\n", dir_list[iterator]);
 	if (_strlen(dir_list[iterator]) <= 2)
 	{
 		if (_strcmp(".", dir_list[iterator]) == 0
