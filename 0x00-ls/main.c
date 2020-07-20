@@ -24,16 +24,6 @@ int execute(int argc, char **argv)
 	ls_struct = initialize_ls(ls_struct);
 	ls_struct.options = get_options_list(argc, argv, ls_struct.options);
 	ls_struct = get_arguments(argc, argv, ls_struct);
-	if (ls_struct.files_number > 1)
-		ls_struct.files = sort_directories_list_by_name(
-			ls_struct.files,
-			ls_struct.files_number
-		);
-	if (ls_struct.directories_number > 1)
-		ls_struct.directories = sort_directories_list_by_name(
-			ls_struct.directories,
-			ls_struct.directories_number
-		);
 
 	print_errors_access(ls_struct);
 	print_files(ls_struct);
