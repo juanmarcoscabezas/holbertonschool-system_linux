@@ -26,6 +26,13 @@ int _strcmp_ci(char *s1, char *s2)
 	}
 	if (_strcmp(s1, s2) == 0 && len1 != -1 && len2 != -1)
 	{
+		if (*s1 == '/' || *s2 == '/')
+		{
+			if (len1 > len2)
+				return (1);
+			else
+				return (-1);
+		}
 		if (len1 > len2)
 			return (-1);
 		else
@@ -39,10 +46,6 @@ int _strcmp_ci(char *s1, char *s2)
 			return ((__tolower(*s2) - __tolower(*s1)) * -1);
 		s1++;
 		s2++;
-		if (*s1 == '\0' && *s2 != '\0')
-			return (-1);
-		if (*s1 != '\0' && *s2 == '\0')
-			return (1);
 	}
 	return (0);
 }
