@@ -123,6 +123,7 @@ char **set_list(char **, char **, size_t, int);
 LS_Struct_t add_current_directory(LS_Struct_t);
 char __tolower(char);
 void print_perm(char *, int);
+int _strcmp_aux(char *, char *);
 
 /*
  * Options
