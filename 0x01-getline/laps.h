@@ -21,8 +21,6 @@ typedef struct Cars
 
 void race_state(int *id, size_t size);
 void insert_car(Cars_t **cars_list, int id);
-void print_cars(Cars_t *cars_list);
-void remove_cars(Cars_t *cars_list);
 void append_car(Cars_t **cars_list, int id);
 void push_car(Cars_t *cars_iterator, int id);
 

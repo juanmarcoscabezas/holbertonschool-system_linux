@@ -9,11 +9,16 @@
 void race_state(int *id, size_t size)
 {
 	size_t iterator;
-	static Cars_t *cars_list_head;
+	static Cars_t *cars_list_head, *cars_list;
 
 	if (size == 0)
 	{
-		remove_cars(cars_list_head);
+		for (; cars_list_head != NULL;)
+		{
+			cars_list = cars_list_head;
+			cars_list_head = cars_list_head->next;
+			free(cars_list);
+		}
 		return;
 	}
 
@@ -22,7 +27,13 @@ void race_state(int *id, size_t size)
 		insert_car(&cars_list_head, id[iterator]);
 	}
 
-	print_cars(cars_list_head);
+	cars_list = cars_list_head;
+	printf("Race state:\n");
+	for (; cars_list != NULL;)
+	{
+		printf("Car %d [%d laps]\n", cars_list->id, cars_list->laps);
+		cars_list = cars_list->next;
+	}
 }
 
 /**
