@@ -12,7 +12,7 @@
  */
 int main(int argc, char **argv, char **env)
 {
-	char *av[] = {"/usr/bin/readelf", "-W", "-h", "", NULL};
+	char *av[] = {"/usr/bin/readelf", "-W", "-l", "", NULL};
 
 	(void)argc;
 	av[3] = argv[1];
