@@ -22,6 +22,26 @@ int main(int argc, char *argv[], char *argp[])
 	}
 	setbuf(stdout, NULL);
 	child_process = fork();
-
+	if (child_process == 0)
+	{
+		ptrace(PTRACE_TRACEME, child_process, NULL, NULL);
+		raise(SIGSTOP);
+		execve(argv[1], &(argv[1]), argp);
+	}
+	else
+	{
+		wait(&process_s);
+		if (WIFEXITED(process_s))
+			return (0);
+		ptrace(PTRACE_SYSCALL, child_process, NULL, NULL);
+		while (wait(&process_s) && !WIFEXITED(process_s))
+		{
+			memset(&regs, 0, sizeof(regs));
+			ptrace(PTRACE_GETREGS, child_process, NULL, &regs);
+			if (WSTOPSIG(process_s) == SIGTRAP && (long) regs.rax == -38)
+				printf("%lu\n", (unsigned long) regs.orig_rax);
+			ptrace(PTRACE_SYSCALL, child_process, NULL, NULL);
+		}
+	}
 	return (0);
 }
