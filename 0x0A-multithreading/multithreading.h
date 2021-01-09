@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <pthread.h>
 
 /**
  * struct pixel_s - RGB pixel
@@ -69,4 +70,5 @@ typedef struct blur_portion_s
 } blur_portion_t;
 
 void *thread_entry(void *arg);
+
 #endif
